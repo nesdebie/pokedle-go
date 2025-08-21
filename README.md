@@ -11,6 +11,7 @@ Pokédle is a Wordle-like game built in Go where players guess Pokémon.
 This project’s **source code** is licensed under the [MIT License](LICENSE).
 
 ## FileTree
+```
 pokedle/
 ├── LICENSE
 ├── README.md
@@ -28,6 +29,7 @@ pokedle/
 │       └── utils.go
 └── assets/ (optionnel, vide ou ignoré)
     └── .gitkeep
+```
 
 ## ❗ Disclaimer
 Pokédle uses Pokémon names and images, which are trademarks and copyrighted material owned by **The Pokémon Company** and **Nintendo**.  
