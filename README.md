@@ -12,23 +12,19 @@ This project’s **source code** is licensed under the [MIT License](LICENSE).
 
 ## FileTree
 ```
-pokedle/
-├── main.go                # Point d’entrée du serveur web
-├── internal/
-│   ├── game/
-│   │   ├── game.go        # Logique du jeu (Pokémon du jour, vérif réponses)
-│   ├── pokeapi/
-│   │   ├── client.go      # Client HTTP pour PokéAPI
-│   ├── data/
-│       ├── names.go       # Gestion du CSV des noms multi-langues
-│   └── utils/
-│       ├── random.go      # Génération sécurisée aléatoire
+├── data/
+│   └── pokemon_names_multilang.csv
 ├── static/
-│   ├── js/                # Frontend JS (interaction)
-│   ├── css/
-│   └── index.html
-└── data/
-    └── pokemon_names.csv  # Ton CSV pré-généré
+│   ├── app.js
+│   ├── index.html
+│   └── styles.css
+├── .git 🚫 (auto-hidden)
+├── LICENSE
+├── Makefile
+├── README.md
+├── genkey.go
+├── main.go
+└── update_csv.go
 
 ```
 
