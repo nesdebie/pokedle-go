@@ -1,0 +1,126 @@
+
+:root {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+body {
+    margin: 0;
+    background: #0b1020;
+    color: #e7ecff;
+}
+
+.container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+}
+
+.sub {
+    margin: 0 0 16px;
+    color: #a9b3d1;
+}
+
+form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+input { 
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #2b3557;
+    background: #0f1630;
+    color: #fff;
+}
+
+button { 
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 0;
+    background: #4f6af5;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover { 
+    filter: brightness(1.05);
+}
+
+#status {
+    margin: 8px 0 16px;
+    color: #c9d3ff;
+}
+
+#guesses {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.guess {
+    display: grid;
+    grid-template-columns: 64px 1fr; gap: 12px;
+    align-items: center;
+    background: #121a3a;
+    padding: 10px;
+    border: 1px solid #26305a;
+    border-radius: 12px;
+}
+
+.guess img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,.4));
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid #2f3a64;
+    margin-right: 6px;
+    font-size: 12px;
+}
+
+.ok {
+    background: #1f7a3d;
+    border-color: #2ea75a;
+}
+
+.wrong {
+    background: #7a1f1f;
+    border-color: #a72e2e;
+}
+
+.neutral {
+    background: #3b3b3b;
+    border-color: #6a6a6a;
+}
+
+.hints {
+    color: #b9c3ea;
+    font-size: 14px;
+}
+
+.name {
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.reveal {
+    margin-top: 14px;
+    padding: 10px;
+    border-radius: 12px;
+    background: #0d1b2e;
+    border: 1px dashed #32547a;
+}

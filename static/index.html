@@ -1,0 +1,26 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pokedle (beta)</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Pokédle (beta)</h1>
+    <p class="sub">Devine le Pokémon du jour (noms FR/EN/DE/ES/IT acceptés) — les indices te guident.</p>
+
+    <form id="guessForm">
+      <input id="guessInput" type="text" placeholder="Tape un nom de Pokémon…" autocomplete="off" />
+      <button type="submit">Valider</button>
+    </form>
+
+    <div id="status"></div>
+    <ul id="guesses"></ul>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
