@@ -67,11 +67,11 @@ form.addEventListener("submit", async (e) => {
 
     const wh = document.createElement("span");
     wh.className = "badge neutral";
-    wh.textContent = `Weight: ${data.hints.weightHint}`;
+    wh.textContent = `${data.hints.weightHint}`;
 
     const hh = document.createElement("span");
     hh.className = "badge neutral";
-    hh.textContent = `Size: ${data.hints.heightHint}`;
+    hh.textContent = `${data.hints.heightHint}`;
 
     hints.appendChild(tm);
     hints.appendChild(idh);

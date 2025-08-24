@@ -331,18 +331,18 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 	var weightHint string
 	switch {
 	case guessP.Weight < targetP.Weight:
-		weightHint = "too light"
+		weightHint = ">" + strconv.FormatFloat(float64(guessP.Weight)/10, 'f', 1, 64) + "kg"
 	case guessP.Weight > targetP.Weight:
-		weightHint = "too heavy"
+		weightHint = "<" + strconv.FormatFloat(float64(guessP.Weight)/10, 'f', 1, 64) + "kg"
 	default:
 		weightHint = "even"
 	}
 	var heightHint string
 	switch {
 	case guessP.Height < targetP.Height:
-		heightHint = "too small"
+		heightHint = ">" + strconv.Itoa(guessP.Height * 10) + "cm"
 	case guessP.Height > targetP.Height:
-		heightHint = "too big"
+		heightHint = "<" + strconv.Itoa(guessP.Height * 10) + "cm"
 	default:
 		heightHint = "even"
 	}
