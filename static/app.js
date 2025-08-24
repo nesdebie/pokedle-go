@@ -40,21 +40,21 @@ form.addEventListener("submit", async (e) => {
     hints.className = "hints";
     const tm = document.createElement("span");
     tm.className = "badge " + (data.hints.typeMatch === 2 ? "ok" : data.hints.typeMatch === 1 ? "neutral" : "wrong");
-    tm.textContent = `Types en commun: ${data.hints.typeMatch}`;
+    tm.textContent = `Shared types: ${data.hints.typeMatch}`;
     const idh = document.createElement("span");
-    let idTxt = "ID égal";
-    if (data.hints.idHint < 0) idTxt = "Cible plus HAUTE (#)";
-    if (data.hints.idHint > 0) idTxt = "Cible plus BASSE (#)";
+    let idTxt = "same ID";
+    if (data.hints.idHint < 0) idTxt = "id too low (#)";
+    if (data.hints.idHint > 0) idTxt = "id too high(#)";
     idh.className = "badge neutral";
     idh.textContent = idTxt;
 
     const wh = document.createElement("span");
     wh.className = "badge neutral";
-    wh.textContent = `Poids: ${data.hints.weightHint}`;
+    wh.textContent = `Weight: ${data.hints.weightHint}`;
 
     const hh = document.createElement("span");
     hh.className = "badge neutral";
-    hh.textContent = `Taille: ${data.hints.heightHint}`;
+    hh.textContent = `Size: ${data.hints.heightHint}`;
 
     hints.appendChild(tm);
     hints.appendChild(idh);
@@ -65,7 +65,7 @@ form.addEventListener("submit", async (e) => {
     if (data.correct && data.reveal) {
       const rev = document.createElement("div");
       rev.className = "reveal";
-      rev.textContent = `Bravo ! Le Pokémon du jour était #${data.reveal.id} — ${data.reveal.name}.`;
+      rev.textContent = `Congrats ! The Pokémon of the day was #${data.reveal.id} — ${data.reveal.name}.`;
       info.appendChild(rev);
     }
 
@@ -73,6 +73,6 @@ form.addEventListener("submit", async (e) => {
     li.appendChild(info);
     list.prepend(li);
   } catch (e) {
-    statusEl.textContent = "Erreur réseau.";
+    statusEl.textContent = "Network Error.";
   }
 });

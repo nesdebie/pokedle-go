@@ -303,7 +303,7 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 	key := normalizeKey(req.Guess)
 	id, ok := s.names.idByKey[key]
 	if !ok {
-		writeJSON(w, GuessResp{OK: false, Error: "Nom de Pokémon introuvable", Correct: false})
+		writeJSON(w, GuessResp{OK: false, Error: "Incorrect Pokémon name", Correct: false})
 		return
 	}
 
@@ -313,7 +313,7 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 	guessP, gErr := fetchPokemon(id)
 	targetP, tErr := fetchPokemon(targetID)
 	if gErr != nil || tErr != nil {
-		writeJSON(w, GuessResp{OK: false, Error: "Erreur PokeAPI", Correct: false})
+		writeJSON(w, GuessResp{OK: false, Error: "PokeAPI Error", Correct: false})
 		return
 	}
 
@@ -327,20 +327,20 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 	var weightHint string
 	switch {
 	case guessP.Weight < targetP.Weight:
-		weightHint = "plus léger"
+		weightHint = "guess too light"
 	case guessP.Weight > targetP.Weight:
-		weightHint = "plus lourd"
+		weightHint = "guess too heavy"
 	default:
-		weightHint = "égal"
+		weightHint = "even"
 	}
 	var heightHint string
 	switch {
 	case guessP.Height < targetP.Height:
-		heightHint = "plus petit"
+		heightHint = "guess too small"
 	case guessP.Height > targetP.Height:
-		heightHint = "plus grand"
+		heightHint = "guess too big"
 	default:
-		heightHint = "égal"
+		heightHint = "even"
 	}
 
 	sprite := guessP.Sprites.FrontDefault
