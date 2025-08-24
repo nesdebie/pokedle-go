@@ -3,6 +3,7 @@ const form = document.getElementById("guessForm");
 const input = document.getElementById("guessInput");
 const list = document.getElementById("guesses");
 const statusEl = document.getElementById("status");
+const counterEl = document.getElementById("counter");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -23,7 +24,23 @@ form.addEventListener("submit", async (e) => {
       return;
     }
     statusEl.textContent = "";
-
+    //if (data.guessCounter != 0) {
+      bigHintTier = Math.floor(data.guessCounter / 3);
+      console.warn(bigHintTier);
+      switch (bigHintTier) {
+        case 0:
+          statusEl.textContent = `Attempts : ${data.guessCounter}. First hint coming after ${3 - data.guessCounter} other attempts.`;
+          break;
+        case 1:
+          statusEl.textContent = `Attempts : ${data.guessCounter}. Next hint coming after ${6 - data.guessCounter} other attempts.`;
+          break;
+        case 2:
+          statusEl.textContent = `Attempts : ${data.guessCounter}. Last hint coming after ${9 - data.guessCounter} other attempts.`;
+          break;
+        default:
+          statusEl.textContent = `Attempts : ${data.guessCounter}`;
+      }
+    //}
     const li = document.createElement("li");
     li.className = "guess";
     const sprite = document.createElement("img");

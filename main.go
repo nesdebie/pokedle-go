@@ -21,6 +21,8 @@ import (
 	"golang.org/x/text/unicode/norm"
 )
 
+var guessCounter = 0
+
 // ---------------- Data models from PokeAPI  ----------------
 
 type Stat struct {
@@ -282,12 +284,13 @@ type GuessReq struct {
 }
 
 type GuessResp struct {
-	OK      bool              `json:"ok"`
-	Error   string            `json:"error,omitempty"`
-	Correct bool              `json:"correct"`
-	Guess   map[string]any    `json:"guess"`
-	Hints   map[string]any    `json:"hints"`
-	Reveal  map[string]any    `json:"reveal,omitempty"`
+	OK      		bool              `json:"ok"`
+	Error   		string            `json:"error,omitempty"`
+	Correct 		bool              `json:"correct"`
+	Guess   		map[string]any    `json:"guess"`
+	Hints   		map[string]any    `json:"hints"`
+	Reveal  		map[string]any    `json:"reveal,omitempty"`
+	GuessCounter	int				  `json:"guessCounter"`
 }
 
 func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
@@ -306,6 +309,7 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, GuessResp{OK: false, Error: "Incorrect Pokémon name", Correct: false})
 		return
 	}
+	guessCounter++
 
 	todayIdx := pickDailyIndex(s.names, time.Now().UTC())
 	targetID := s.names.idAt(todayIdx)
@@ -327,18 +331,18 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 	var weightHint string
 	switch {
 	case guessP.Weight < targetP.Weight:
-		weightHint = "guess too light"
+		weightHint = "too light"
 	case guessP.Weight > targetP.Weight:
-		weightHint = "guess too heavy"
+		weightHint = "too heavy"
 	default:
 		weightHint = "even"
 	}
 	var heightHint string
 	switch {
 	case guessP.Height < targetP.Height:
-		heightHint = "guess too small"
+		heightHint = "too small"
 	case guessP.Height > targetP.Height:
-		heightHint = "guess too big"
+		heightHint = "too big"
 	default:
 		heightHint = "even"
 	}
@@ -368,6 +372,7 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 			"heightHint": heightHint,
 			"distance":   int(math.Abs(float64(targetP.ID - guessP.ID))),
 		},
+		GuessCounter: guessCounter,
 	}
 
 	if resp.Correct {
@@ -404,6 +409,7 @@ func (s *Server) handleToday(w http.ResponseWriter, r *http.Request) {
 		"index":     idx,
 		"max":       s.names.maxIndex(),
 		"remaining": s.names.maxIndex() - idx - 1,
+		"guessCounter" : guessCounter,
 	})
 }
 
