@@ -14,11 +14,18 @@ $(NAME):
 	@echo "$(RED)Usage: $(GREEN)./$(NAME)$(NC)"
 	@echo "$(RED)Update csv: $(GREEN)make csv$(NC)"
 	go run genkey.go
-csv:
+
+names:
 	@if [ -f data/pokemon_names_multilang.csv ]; then \
 		rm data/pokemon_names_multilang.csv; \
 	fi
-	go run update_csv.go
+	go run update_names_csv.go
+
+gen:
+	@if [ -f data/pokemon_id_gen.csv ]; then \
+		rm data/pokemon_id_gen.csv; \
+	fi
+	go run update_gen_csv.go
 
 clean:
 	@rm -f $(NAME) go.mod go.sum .env
