@@ -89,6 +89,34 @@ func normalizeKey(s string) string {
 	return strings.ToLower(removeAccents(strings.TrimSpace(s)))
 }
 
+func loadGenerationMap(path string) (map[int]int, error) {
+    file, err := os.Open(path)
+    if err != nil {
+        return nil, err
+    }
+    defer file.Close()
+
+    reader := csv.NewReader(file)
+    rows, err := reader.ReadAll()
+    if err != nil {
+        return nil, err
+    }
+
+    genMap := make(map[int]int)
+
+    for _, row := range rows[1:] {
+        id, err1 := strconv.Atoi(row[0])
+        gen, err2 := strconv.Atoi(row[1])
+        if err1 != nil || err2 != nil {
+            continue
+        }
+        genMap[id] = gen
+    }
+
+    return genMap, nil
+}
+
+
 func loadNames(csvPath string) (*NameIndex, error) {
 	f, err := os.Open(csvPath)
 	if err != nil {
@@ -322,12 +350,22 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 	}
 
 	typeMatch := intersectCount(typeSet(guessP), typeSet(targetP))
-	idHint := 0
-	if guessP.ID < targetP.ID {
-		idHint = -1
-	} else if guessP.ID > targetP.ID {
-		idHint = 1
+
+	genMap, err := loadGenerationMap("data/pokemon_id_gen.csv")
+	if err != nil {
+		panic(err)
 	}
+	
+	genHint := 0
+	guessGen := genMap[guessP.ID]
+	targetGen := genMap[targetP.ID]
+	
+	if guessGen < targetGen {
+		genHint = -1 // Devinez un Pokémon d'une génération plus récente
+	} else if guessGen > targetGen {
+		genHint = 1 // Devinez un Pokémon d'une génération plus ancienne
+	}
+	
 	var weightHint string
 	switch {
 	case guessP.Weight < targetP.Weight:
@@ -367,7 +405,7 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		},
 		Hints: map[string]any{
 			"typeMatch":  typeMatch,
-			"idHint":     idHint,
+			"genHint":     genHint,
 			"weightHint": weightHint,
 			"heightHint": heightHint,
 			"distance":   int(math.Abs(float64(targetP.ID - guessP.ID))),

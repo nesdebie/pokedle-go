@@ -10,7 +10,7 @@ form.addEventListener("submit", async (e) => {
   const guess = input.value.trim();
   if (!guess) return;
   input.value = "";
-  statusEl.textContent = "Vérification…";
+  statusEl.textContent = "Checking...";
 
   try {
     const res = await fetch("/api/guess", {
@@ -23,24 +23,20 @@ form.addEventListener("submit", async (e) => {
       statusEl.textContent = data.error || "Erreur.";
       return;
     }
-    statusEl.textContent = "";
-    //if (data.guessCounter != 0) {
-      bigHintTier = Math.floor(data.guessCounter / 3);
-      console.warn(bigHintTier);
-      switch (bigHintTier) {
-        case 0:
-          statusEl.textContent = `Attempts : ${data.guessCounter}. First hint coming after ${3 - data.guessCounter} other attempts.`;
-          break;
-        case 1:
-          statusEl.textContent = `Attempts : ${data.guessCounter}. Next hint coming after ${6 - data.guessCounter} other attempts.`;
-          break;
-        case 2:
-          statusEl.textContent = `Attempts : ${data.guessCounter}. Last hint coming after ${9 - data.guessCounter} other attempts.`;
-          break;
-        default:
-          statusEl.textContent = `Attempts : ${data.guessCounter}`;
-      }
-    //}
+    //statusEl.textContent = "";
+    bigHintTier = Math.floor(data.guessCounter / 3);
+    switch (bigHintTier) {
+      case 0:
+        statusEl.textContent = `Attempts : ${data.guessCounter}. First hint coming after ${3 - data.guessCounter} other attempts.`;
+        break;
+      case 1:
+        statusEl.textContent = `Attempts : ${data.guessCounter}. Next hint coming after ${6 - data.guessCounter} other attempts.`;
+        break;
+      case 2:
+        statusEl.textContent = `Attempts : ${data.guessCounter}. Last hint coming after ${9 - data.guessCounter} other attempts.`;          break;
+      default:
+        statusEl.textContent = `Attempts : ${data.guessCounter}`;
+    }
     const li = document.createElement("li");
     li.className = "guess";
     const sprite = document.createElement("img");
@@ -59,9 +55,9 @@ form.addEventListener("submit", async (e) => {
     tm.className = "badge " + (data.hints.typeMatch === 2 ? "ok" : data.hints.typeMatch === 1 ? "neutral" : "wrong");
     tm.textContent = `Shared types: ${data.hints.typeMatch}`;
     const idh = document.createElement("span");
-    let idTxt = "same ID";
-    if (data.hints.idHint < 0) idTxt = "id too low (#)";
-    if (data.hints.idHint > 0) idTxt = "id too high(#)";
+    let idTxt = "same Gen";
+    if (data.hints.genHint < 0) idTxt = "newer Gen";
+    if (data.hints.genHint > 0) idTxt = "older Gen";
     idh.className = "badge neutral";
     idh.textContent = idTxt;
 

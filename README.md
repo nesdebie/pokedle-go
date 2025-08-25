@@ -12,7 +12,22 @@ This project’s **source code** is licensed under the [MIT License](LICENSE).
 
 ## FileTree
 ```
-SOON
+pokedle
+├── data/
+│   ├── pokemon_id_gen.csv
+│   └── pokemon_names_multilang.csv
+├── static/
+│   ├── app.js
+│   ├── index.html
+│   └── styles.css
+├── .git 🚫 (auto-hidden)
+├── LICENSE
+├── Makefile
+├── README.md
+├── genkey.go
+├── main.go
+├── update_gen_csv.go
+└── update_names_csv.go
 
 ```
 
