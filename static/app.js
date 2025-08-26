@@ -23,7 +23,7 @@ form.addEventListener("submit", async (e) => {
       statusEl.textContent = data.error || "Erreur.";
       return;
     }
-    //statusEl.textContent = "";
+  
     bigHintTier = Math.floor(data.guessCounter / 3);
     switch (bigHintTier) {
       case 0:
@@ -37,6 +37,7 @@ form.addEventListener("submit", async (e) => {
       default:
         statusEl.textContent = `Attempts : ${data.guessCounter}`;
     }
+  
     const li = document.createElement("li");
     li.className = "guess";
     const sprite = document.createElement("img");
@@ -51,25 +52,44 @@ form.addEventListener("submit", async (e) => {
 
     const hints = document.createElement("div");
     hints.className = "hints";
-    const tm = document.createElement("span");
-    tm.className = "badge " + (data.hints.typeMatch === 2 ? "ok" : data.hints.typeMatch === 1 ? "neutral" : "wrong");
-    tm.textContent = `Shared types: ${data.hints.typeMatch}`;
-    const idh = document.createElement("span");
-    let idTxt = "same Gen";
-    if (data.hints.genHint < 0) idTxt = "newer Gen";
-    if (data.hints.genHint > 0) idTxt = "older Gen";
-    idh.className = "badge neutral";
-    idh.textContent = idTxt;
 
+    const t1 = document.createElement("span");
+    t1.className = "badge " + (data.hints.type1Match ? "ok" : "wrong");
+    t1.textContent = `${data.hints.type1}`;
+    
+    const t2 = document.createElement("span");
+    t2.className = "badge " + (data.hints.type2Match ? "ok" : "wrong");
+    t2.textContent = `${data.hints.type2}`;
+  
+    const idh = document.createElement("span");
+    const guessedGen = data.hints.guessedGen;
+    const correctGen = data.hints.correctGen;
+    idh.className = "badge ok";
+    let idTxt = `${guessedGen}G`;
+    if (guessedGen !== correctGen) {
+      idh.className = "badge wrong";
+      if (guessedGen < correctGen) {
+        idTxt = ">" + idTxt;
+      } else {
+        idTxt = "<" + idTxt;
+      }
+    }
+    idh.textContent = idTxt;
+    
     const wh = document.createElement("span");
-    wh.className = "badge neutral";
+    wh.className = "badge ok";
     wh.textContent = `${data.hints.weightHint}`;
+    if (wh.textContent.startsWith(">") || wh.textContent.startsWith("<"))
+      wh.className = "badge wrong";
 
     const hh = document.createElement("span");
-    hh.className = "badge neutral";
+    hh.className = "badge ok";
     hh.textContent = `${data.hints.heightHint}`;
-
-    hints.appendChild(tm);
+    if (hh.textContent.startsWith(">") || hh.textContent.startsWith("<"))
+      hh.className = "badge wrong";
+  
+    hints.appendChild(t1);
+    hints.appendChild(t2);
     hints.appendChild(idh);
     hints.appendChild(wh);
     hints.appendChild(hh);

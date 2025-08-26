@@ -12,7 +12,7 @@ $(NAME):
 	go get golang.org/x/text/unicode/norm
 	go build -o $(NAME) $(SRC)
 	@echo "$(RED)Usage: $(GREEN)./$(NAME)$(NC)"
-	@echo "$(RED)Update csv: $(GREEN)make csv$(NC)"
+	@echo "$(RED)Update csv: $(GREEN)make name && make gen$(NC)"
 	go run genkey.go
 
 names:

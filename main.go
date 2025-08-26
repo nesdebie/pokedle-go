@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.go                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
+/*   Updated: 2025/08/26 13:09:42 by nesdebie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 package main
 
@@ -275,25 +287,16 @@ func fetchPokemon(id int) (*Pokemon, error) {
 	return &p, nil
 }
 
-func typeSet(p *Pokemon) map[string]bool {
-	m := make(map[string]bool)
-	if p == nil {
-		return m
-	}
-	for _, te := range p.Types {
-		m[te.Type.Name] = true
-	}
-	return m
-}
-
-func intersectCount(a, b map[string]bool) int {
-	n := 0
-	for k := range a {
-		if b[k] {
-			n++
-		}
-	}
-	return n
+func extractTypes(p *Pokemon) (string, string) {
+    t1, t2 := "none", "none"
+    for _, te := range p.Types {
+        if te.Slot == 1 {
+            t1 = te.Type.Name
+        } else if te.Slot == 2 {
+            t2 = te.Type.Name
+        }
+    }
+    return t1, t2
 }
 
 // ---------------- HTTP Handlers ----------------
@@ -349,40 +352,33 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	typeMatch := intersectCount(typeSet(guessP), typeSet(targetP))
 
+	guessType1, guessType2 := extractTypes(guessP)
+	targetType1, targetType2 := extractTypes(targetP)
+	
 	genMap, err := loadGenerationMap("data/pokemon_id_gen.csv")
 	if err != nil {
 		panic(err)
 	}
 	
-	genHint := 0
 	guessGen := genMap[guessP.ID]
 	targetGen := genMap[targetP.ID]
 	
-	if guessGen < targetGen {
-		genHint = -1 // Devinez un Pokémon d'une génération plus récente
-	} else if guessGen > targetGen {
-		genHint = 1 // Devinez un Pokémon d'une génération plus ancienne
-	}
-	
-	var weightHint string
+	weightHint := strconv.FormatFloat(float64(guessP.Weight)/10, 'f', 1, 64) + "kg"
 	switch {
 	case guessP.Weight < targetP.Weight:
-		weightHint = ">" + strconv.FormatFloat(float64(guessP.Weight)/10, 'f', 1, 64) + "kg"
+		weightHint = ">" + weightHint
 	case guessP.Weight > targetP.Weight:
-		weightHint = "<" + strconv.FormatFloat(float64(guessP.Weight)/10, 'f', 1, 64) + "kg"
-	default:
-		weightHint = "even"
+		weightHint = "<" + weightHint
+	//default:
 	}
-	var heightHint string
+	heightHint := strconv.Itoa(guessP.Height * 10) + "cm"
 	switch {
 	case guessP.Height < targetP.Height:
-		heightHint = ">" + strconv.Itoa(guessP.Height * 10) + "cm"
+		heightHint = ">" + heightHint
 	case guessP.Height > targetP.Height:
-		heightHint = "<" + strconv.Itoa(guessP.Height * 10) + "cm"
-	default:
-		heightHint = "even"
+		heightHint = "<" + heightHint
+	//default:
 	}
 
 	sprite := guessP.Sprites.FrontDefault
@@ -398,14 +394,18 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		Guess: map[string]any{
 			"id":     guessP.ID,
 			"name":   guessP.Name,
-			"types":  typeSet(guessP),
+			"types":  []string{guessType1, guessType2},
 			"height": guessP.Height,
 			"weight": guessP.Weight,
 			"sprite": sprite,
 		},
 		Hints: map[string]any{
-			"typeMatch":  typeMatch,
-			"genHint":     genHint,
+			"type1":      guessType1,
+			"type2":      guessType2,
+			"type1Match": (guessType1 == targetType1),
+        	"type2Match": (guessType2 == targetType2),
+			"guessedGen":  guessGen,
+			"correctGen":  targetGen,
 			"weightHint": weightHint,
 			"heightHint": heightHint,
 			"distance":   int(math.Abs(float64(targetP.ID - guessP.ID))),
@@ -423,7 +423,7 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		resp.Reveal = map[string]any{
 			"id":     targetP.ID,
 			"name":   targetP.Name,
-			"types":  typeSet(targetP),
+			"types":  []string{targetType1, targetType2},
 			"height": targetP.Height,
 			"weight": targetP.Weight,
 			"sprite": targetSprite,
