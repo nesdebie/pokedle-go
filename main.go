@@ -6,7 +6,7 @@
 /*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
-/*   Updated: 2025/08/26 13:28:47 by nesdebie         ###   ########.fr       */
+/*   Updated: 2025/08/26 14:48:07 by nesdebie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ import (
 
 	"golang.org/x/text/unicode/norm"
 )
-
-var guessCounter = 0
 
 // ---------------- Data models from PokeAPI  ----------------
 
@@ -325,10 +323,17 @@ type GuessResp struct {
 }
 
 func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("solved")
+	if err == nil && cookie.Value == "true" {
+		writeJSON(w, GuessResp{OK: false, Error: "You already found. Try tomorrow!", Correct: true})
+		return
+	}
+	
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
+
 	var req GuessReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "bad json", http.StatusBadRequest)
@@ -340,7 +345,13 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, GuessResp{OK: false, Error: "Incorrect Pokémon name", Correct: false})
 		return
 	}
-	guessCounter++
+
+	cookie, err = r.Cookie("guesses")
+	var guessCount int
+	if err == nil {
+		guessCount, _ = strconv.Atoi(cookie.Value)
+	}
+	guessCount++
 
 	todayIdx := pickDailyIndex(s.names, time.Now().UTC())
 	targetID := s.names.idAt(todayIdx)
@@ -412,10 +423,24 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 			"heightHint": heightHint,
 			"distance":   int(math.Abs(float64(targetP.ID - guessP.ID))),
 		},
-		GuessCounter: guessCounter,
+		GuessCounter: guessCount,
 	}
 
+	now := time.Now()
+	midnight := time.Date(
+		now.Year(), now.Month(), now.Day()+1,
+		0, 0, 0, 0,
+		now.Location(),
+	)
+
 	if resp.Correct {
+		http.SetCookie(w, &http.Cookie{
+			Name:     "solved",
+			Value:    "true",
+			Path:     "/",
+			Expires:  midnight,
+			HttpOnly: true,
+		})
 		targetSprite := targetP.Sprites.FrontDefault
 		if oa, ok := targetP.Sprites.Other["official-artwork"]; ok {
 			if oa.FrontDefault != "" {
@@ -432,6 +457,14 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	http.SetCookie(w, &http.Cookie{
+		Name:     "guesses",
+		Value:    strconv.Itoa(guessCount),
+		Path:     "/",
+		Expires:  midnight,
+		HttpOnly: true,
+	})
+	
 	writeJSON(w, resp)
 }
 
@@ -444,12 +477,19 @@ func writeJSON(w http.ResponseWriter, v any) {
 
 func (s *Server) handleToday(w http.ResponseWriter, r *http.Request) {
 	idx := pickDailyIndex(s.names, time.Now().UTC())
+
+	cookie, err := r.Cookie("guesses")
+	var guessCount int
+	if err == nil {
+		guessCount, _ = strconv.Atoi(cookie.Value)
+	}
+	
 	writeJSON(w, map[string]any{
 		"date":      dayKey(time.Now().UTC()),
 		"index":     idx,
 		"max":       s.names.maxIndex(),
 		"remaining": s.names.maxIndex() - idx - 1,
-		"guessCounter" : guessCounter,
+		"guessCounter" : guessCount,
 	})
 }
 

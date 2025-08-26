@@ -102,6 +102,14 @@ form.addEventListener("submit", async (e) => {
       rev.className = "reveal";
       rev.textContent = `Congrats ! The Pokémon of the day was #${data.reveal.id} — ${data.reveal.name}.`;
       info.appendChild(rev);
+
+      const guessForm = document.getElementById("guessForm");
+      const guessInput = document.getElementById("guessInput");
+      const guessButton = guessForm?.querySelector("button");
+    
+      if (guessInput) guessInput.disabled = true;
+      if (guessButton) guessButton.disabled = true;
+      if (guessForm) guessForm.style.display = "none";
     }
 
     li.appendChild(sprite);
