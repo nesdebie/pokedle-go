@@ -12,6 +12,7 @@ $(NAME):
 	go get golang.org/x/text/unicode/norm
 	go build -o $(NAME) $(SRC)
 	@echo "$(RED)Usage: $(GREEN)./$(NAME)$(NC)"
+	@echo "$(RED)Dev mode: $(GREEN)./$(NAME) dev$(NC)"
 	@echo "$(RED)Update csv: $(GREEN)make name && make gen$(NC)"
 	go run genkey.go
 
@@ -32,4 +33,4 @@ clean:
 
 re: clean all
 
-.PHONY: all clean csv re
+.PHONY: all clean names gen re

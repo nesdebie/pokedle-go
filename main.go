@@ -6,7 +6,7 @@
 /*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
-/*   Updated: 2025/08/26 14:48:07 by nesdebie         ###   ########.fr       */
+/*   Updated: 2025/08/26 15:42:07 by nesdebie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ import (
 
 	"golang.org/x/text/unicode/norm"
 )
+
+var isDevMode bool
 
 // ---------------- Data models from PokeAPI  ----------------
 
@@ -432,6 +434,9 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		0, 0, 0, 0,
 		now.Location(),
 	)
+	if isDevMode {
+		midnight = time.Now().Add(1 * time.Minute)
+	}
 
 	if resp.Correct {
 		http.SetCookie(w, &http.Cookie{
@@ -494,8 +499,12 @@ func (s *Server) handleToday(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	isDevMode = false
+	if len(os.Args) == 2 && os.Args[1] == "dev" {
+		isDevMode = true
+	}
 
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	srv := NewServer()
 
 	http.HandleFunc("/", srv.handleIndex)
