@@ -55,10 +55,12 @@ form.addEventListener("submit", async (e) => {
 
     const t1 = document.createElement("span");
     t1.className = "badge " + (data.hints.type1Match ? "ok" : "wrong");
+    if (data.hints.type1MatchWrongPlace) t1.className = "badge neutral"
     t1.textContent = `${data.hints.type1}`;
     
     const t2 = document.createElement("span");
     t2.className = "badge " + (data.hints.type2Match ? "ok" : "wrong");
+    if (data.hints.type2MatchWrongPlace) t2.className = "badge neutral"
     t2.textContent = `${data.hints.type2}`;
   
     const idh = document.createElement("span");

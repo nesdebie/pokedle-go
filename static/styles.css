@@ -97,6 +97,11 @@ button:hover {
     border-color: #2ea75a;
 }
 
+.neutral {
+    background: #c18400;
+    border-color: #fcba06;
+}
+
 .wrong {
     background: #7a1f1f;
     border-color: #a72e2e;

@@ -6,7 +6,7 @@
 /*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
-/*   Updated: 2025/08/26 13:09:42 by nesdebie         ###   ########.fr       */
+/*   Updated: 2025/08/26 13:28:47 by nesdebie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,12 +288,12 @@ func fetchPokemon(id int) (*Pokemon, error) {
 }
 
 func extractTypes(p *Pokemon) (string, string) {
-    t1, t2 := "none", "none"
+    t1, t2 := "(none)", "(none)"
     for _, te := range p.Types {
         if te.Slot == 1 {
-            t1 = te.Type.Name
+            t1 = strings.ToUpper(te.Type.Name)
         } else if te.Slot == 2 {
-            t2 = te.Type.Name
+            t2 = strings.ToUpper(te.Type.Name)
         }
     }
     return t1, t2
@@ -404,6 +404,8 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 			"type2":      guessType2,
 			"type1Match": (guessType1 == targetType1),
         	"type2Match": (guessType2 == targetType2),
+			"type1MatchWrongPlace": (guessType1 == targetType2),
+        	"type2MatchWrongPlace": (guessType2 == targetType1),
 			"guessedGen":  guessGen,
 			"correctGen":  targetGen,
 			"weightHint": weightHint,
