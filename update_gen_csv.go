@@ -132,7 +132,7 @@ func main() {
 				strconv.Itoa(genNum),
 			}
 			output = append(output, row)
-			fmt.Println("[ADD] #", i, " -> Gen", genNum)
+			fmt.Println("[ADD]#", i, " - ", genNum, "G")
 		}
 
 		time.Sleep(100 * time.Millisecond)
