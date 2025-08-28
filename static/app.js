@@ -1,9 +1,81 @@
-
 const form = document.getElementById("guessForm");
 const input = document.getElementById("guessInput");
 const list = document.getElementById("guesses");
 const statusEl = document.getElementById("status");
 const counterEl = document.getElementById("counter");
+
+const positionLabels = ["BASIC", "LVL 1", "LVL 2"];
+
+function createBadge(text, type = "ok") {
+  const span = document.createElement("span");
+  span.className = `badge ${type}`;
+  span.textContent = text;
+  return span;
+}
+
+function createTypeBadges(typeName, match, wrongPlace) {
+  const badge = createBadge(typeName, match ? "ok" : "wrong");
+  if (wrongPlace) badge.className = "badge neutral";
+  return badge;
+}
+
+function createGenBadge(guessedGen, correctGen) {
+  let text = `${guessedGen}G`;
+  let type = "ok";
+  if (guessedGen !== correctGen) {
+    type = "wrong";
+    text = guessedGen < correctGen ? `>${text}` : `<${text}`;
+  }
+  return createBadge(text, type);
+}
+
+function createPositionBadge(guessPos, targetPos) {
+  const text = positionLabels[guessPos] || "Unknown";
+  const type = guessPos === targetPos ? "ok" : "wrong";
+  return createBadge(text, type);
+}
+
+function createEvolutionBadge(guessEvo, targetEvo) {
+  const text = guessEvo === 1 ? "fully evolved" : "not fully evolved";
+  const type = guessEvo === targetEvo ? "ok" : "wrong";
+  return createBadge(text, type);
+}
+
+function createHintsElement(hints) {
+  const container = document.createElement("div");
+  container.className = "hints";
+
+  container.appendChild(createTypeBadges(hints.type1, hints.type1Match, hints.type1MatchWrongPlace));
+  container.appendChild(createTypeBadges(hints.type2, hints.type2Match, hints.type2MatchWrongPlace));
+  container.appendChild(createGenBadge(hints.guessedGen, hints.correctGen));
+
+  const weightBadge = createBadge(hints.weightHint.startsWith(">") || hints.weightHint.startsWith("<") ? hints.weightHint : hints.weightHint, hints.weightHint.startsWith(">") || hints.weightHint.startsWith("<") ? "wrong" : "ok");
+  const heightBadge = createBadge(hints.heightHint.startsWith(">") || hints.heightHint.startsWith("<") ? hints.heightHint : hints.heightHint, hints.heightHint.startsWith(">") || hints.heightHint.startsWith("<") ? "wrong" : "ok");
+  container.appendChild(weightBadge);
+  container.appendChild(heightBadge);
+
+  container.appendChild(createPositionBadge(hints.guessPosition, hints.targetPosition));
+  container.appendChild(createEvolutionBadge(hints.guessFullyEvolved, hints.targetFullyEvolved));
+
+  return container;
+}
+
+function updateStatus(data) {
+  const tier = Math.floor(data.guessCounter / 3);
+  switch(tier) {
+    case 0:
+      statusEl.textContent = `Attempts : ${data.guessCounter}. First hint coming after ${3 - data.guessCounter} other attempts.`;
+      break;
+    case 1:
+      statusEl.textContent = `Attempts : ${data.guessCounter}. Next hint coming after ${6 - data.guessCounter} other attempts.`;
+      break;
+    case 2:
+      statusEl.textContent = `Attempts : ${data.guessCounter}. Last hint coming after ${9 - data.guessCounter} other attempts.`;
+      break;
+    default:
+      statusEl.textContent = `Attempts : ${data.guessCounter}`;
+  }
+}
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -23,26 +95,16 @@ form.addEventListener("submit", async (e) => {
       statusEl.textContent = data.error || "Erreur.";
       return;
     }
-  
-    bigHintTier = Math.floor(data.guessCounter / 3);
-    switch (bigHintTier) {
-      case 0:
-        statusEl.textContent = `Attempts : ${data.guessCounter}. First hint coming after ${3 - data.guessCounter} other attempts.`;
-        break;
-      case 1:
-        statusEl.textContent = `Attempts : ${data.guessCounter}. Next hint coming after ${6 - data.guessCounter} other attempts.`;
-        break;
-      case 2:
-        statusEl.textContent = `Attempts : ${data.guessCounter}. Last hint coming after ${9 - data.guessCounter} other attempts.`;          break;
-      default:
-        statusEl.textContent = `Attempts : ${data.guessCounter}`;
-    }
-  
+
+    updateStatus(data);
+
     const li = document.createElement("li");
     li.className = "guess";
+
     const sprite = document.createElement("img");
     sprite.src = data.guess.sprite || "";
     sprite.alt = data.guess.name;
+    li.appendChild(sprite);
 
     const info = document.createElement("div");
     const title = document.createElement("div");
@@ -50,87 +112,25 @@ form.addEventListener("submit", async (e) => {
     title.textContent = `#${data.guess.id} — ${data.guess.name}`;
     info.appendChild(title);
 
-    const hints = document.createElement("div");
-    hints.className = "hints";
-
-    const t1 = document.createElement("span");
-    t1.className = "badge " + (data.hints.type1Match ? "ok" : "wrong");
-    if (data.hints.type1MatchWrongPlace) t1.className = "badge neutral"
-    t1.textContent = `${data.hints.type1}`;
-    
-    const t2 = document.createElement("span");
-    t2.className = "badge " + (data.hints.type2Match ? "ok" : "wrong");
-    if (data.hints.type2MatchWrongPlace) t2.className = "badge neutral"
-    t2.textContent = `${data.hints.type2}`;
-  
-    const idh = document.createElement("span");
-    const guessedGen = data.hints.guessedGen;
-    const correctGen = data.hints.correctGen;
-    idh.className = "badge ok";
-    let idTxt = `${guessedGen}G`;
-    if (guessedGen !== correctGen) {
-      idh.className = "badge wrong";
-      if (guessedGen < correctGen) {
-        idTxt = ">" + idTxt;
-      } else {
-        idTxt = "<" + idTxt;
-      }
-    }
-    idh.textContent = idTxt;
-    
-    const wh = document.createElement("span");
-    wh.className = "badge ok";
-    wh.textContent = `${data.hints.weightHint}`;
-    if (wh.textContent.startsWith(">") || wh.textContent.startsWith("<"))
-      wh.className = "badge wrong";
-
-    const hh = document.createElement("span");
-    hh.className = "badge ok";
-    hh.textContent = `${data.hints.heightHint}`;
-    if (hh.textContent.startsWith(">") || hh.textContent.startsWith("<"))
-      hh.className = "badge wrong";
-
-    const ph = document.createElement("span");
-    ph.className = "badge wrong";
-    const positionLabels = ["BASIC", "LVL 1", "LVL 2"];
-    ph.textContent = positionLabels[data.hints.guessPosition] || "Unknown";
-    if (data.hints.guessPosition === data.hints.targetPosition) ph.className = "badge ok";
-
-
-    const eh = document.createElement("span");
-    eh.className = "badge wrong";
-    eh.textContent = `not fully evolved`;
-    if (data.hints.guessFullyEvolved === 1) eh.textContent = `fully evolved`;
-    if (data.hints.guessFullyEvolved === data.hints.targetFullyEvolved) eh.className = "badge ok";
-    
-    hints.appendChild(t1);
-    hints.appendChild(t2);
-    hints.appendChild(idh);
-    hints.appendChild(wh);
-    hints.appendChild(hh);
-    hints.appendChild(ph);
-    hints.appendChild(eh);
-    info.appendChild(hints);
+    const hintsEl = createHintsElement(data.hints);
+    info.appendChild(hintsEl);
 
     if (data.correct && data.reveal) {
       const rev = document.createElement("div");
       rev.className = "reveal";
-      rev.textContent = `Congrats ! The Pokémon of the day was #${data.reveal.id} — ${data.reveal.name}.`;
+      rev.textContent = `Congrats! The Pokémon of the day was #${data.reveal.id} — ${data.reveal.name}.`;
       info.appendChild(rev);
 
-      const guessForm = document.getElementById("guessForm");
-      const guessInput = document.getElementById("guessInput");
-      const guessButton = guessForm?.querySelector("button");
-    
-      if (guessInput) guessInput.disabled = true;
+      input.disabled = true;
+      const guessButton = form.querySelector("button");
       if (guessButton) guessButton.disabled = true;
-      if (guessForm) guessForm.style.display = "none";
+      form.style.display = "none";
     }
 
-    li.appendChild(sprite);
     li.appendChild(info);
     list.prepend(li);
-  } catch (e) {
+  } catch (err) {
     statusEl.textContent = "Network Error.";
+    console.error(err);
   }
 });
