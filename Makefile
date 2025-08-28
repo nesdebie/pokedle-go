@@ -16,7 +16,7 @@ $(NAME):
 	@echo "$(RED)Update csv: $(GREEN)make name && make gen$(NC)"
 	go run genkey.go
 
-csv: names gen evolutions
+csv: names gen evolutions regions
 
 names:
 	@if [ -f data/pokemon_names_multilang.csv ]; then \
@@ -35,6 +35,12 @@ evolutions:
 		rm data/pokemon_evolution_data.csv; \
 	fi
 	go run update_evolutions_lines_csv.go
+
+regions:
+	@if [ -f data/pokemon_forms.csv ]; then \
+		rm data/pokemon_forms.csv; \
+	fi
+	go run update_regional_names_csv.go
 
 clean:
 	@rm -f $(NAME) go.mod go.sum .env

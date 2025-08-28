@@ -89,12 +89,27 @@ form.addEventListener("submit", async (e) => {
     hh.textContent = `${data.hints.heightHint}`;
     if (hh.textContent.startsWith(">") || hh.textContent.startsWith("<"))
       hh.className = "badge wrong";
-  
+
+    const ph = document.createElement("span");
+    ph.className = "badge wrong";
+    const positionLabels = ["BASIC", "LVL 1", "LVL 2"];
+    ph.textContent = positionLabels[data.hints.guessPosition] || "Unknown";
+    if (data.hints.guessPosition === data.hints.targetPosition) ph.className = "badge ok";
+
+
+    const eh = document.createElement("span");
+    eh.className = "badge wrong";
+    eh.textContent = `not fully evolved`;
+    if (data.hints.guessFullyEvolved === 1) eh.textContent = `fully evolved`;
+    if (data.hints.guessFullyEvolved === data.hints.targetFullyEvolved) eh.className = "badge ok";
+    
     hints.appendChild(t1);
     hints.appendChild(t2);
     hints.appendChild(idh);
     hints.appendChild(wh);
     hints.appendChild(hh);
+    hints.appendChild(ph);
+    hints.appendChild(eh);
     info.appendChild(hints);
 
     if (data.correct && data.reveal) {

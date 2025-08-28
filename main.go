@@ -6,7 +6,7 @@
 /*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
-/*   Updated: 2025/08/26 15:42:07 by nesdebie         ###   ########.fr       */
+/*   Updated: 2025/08/28 13:45:08 by nesdebie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ type NamesRow struct {
 	IT string
 }
 
+type EvolutionData struct {
+    Position       int `json:"position"`
+    IsFullyEvolved int `json:"is_fully_evolved"`
+}
+
 type NameIndex struct {
 	idByKey map[string]int // normalized name -> id
 	rows    []NamesRow      // keep list for deterministic indexing
@@ -100,6 +105,35 @@ func removeAccents(s string) string {
 func normalizeKey(s string) string {
 	return strings.ToLower(removeAccents(strings.TrimSpace(s)))
 }
+
+func loadEvolutionData(path string) (map[int]EvolutionData, error) {
+    file, err := os.Open(path)
+    if err != nil {
+        return nil, err
+    }
+    defer file.Close()
+
+    reader := csv.NewReader(file)
+    rows, err := reader.ReadAll()
+    if err != nil {
+        return nil, err
+    }
+
+    evoData := make(map[int]EvolutionData)
+
+    for _, row := range rows[1:] { // skip header
+        id, err1 := strconv.Atoi(row[0])
+        pos, err2 := strconv.Atoi(row[1])
+        evo, err3 := strconv.Atoi(row[2])
+        if err1 != nil || err2 != nil || err3 != nil {
+            continue
+        }
+        evoData[id] = EvolutionData{Position: pos, IsFullyEvolved: evo}
+    }
+
+    return evoData, nil
+}
+
 
 func loadGenerationMap(path string) (map[int]int, error) {
     file, err := os.Open(path)
@@ -365,10 +399,18 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	evoMap, err := loadEvolutionData("data/pokemon_evolution_data.csv")
+	if err != nil {
+		panic(err)
+	}
+	
+	guessEvo := evoMap[guessP.ID]
+	targetEvo := evoMap[targetP.ID]
+	
 
 	guessType1, guessType2 := extractTypes(guessP)
 	targetType1, targetType2 := extractTypes(targetP)
-	
+
 	genMap, err := loadGenerationMap("data/pokemon_id_gen.csv")
 	if err != nil {
 		panic(err)
@@ -383,7 +425,6 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		weightHint = ">" + weightHint
 	case guessP.Weight > targetP.Weight:
 		weightHint = "<" + weightHint
-	//default:
 	}
 	heightHint := strconv.Itoa(guessP.Height * 10) + "cm"
 	switch {
@@ -391,7 +432,6 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		heightHint = ">" + heightHint
 	case guessP.Height > targetP.Height:
 		heightHint = "<" + heightHint
-	//default:
 	}
 
 	sprite := guessP.Sprites.FrontDefault
@@ -411,22 +451,29 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 			"height": guessP.Height,
 			"weight": guessP.Weight,
 			"sprite": sprite,
+			"position": guessEvo.Position,
+			"isFullyEvolved": guessEvo.IsFullyEvolved,
 		},
 		Hints: map[string]any{
 			"type1":      guessType1,
 			"type2":      guessType2,
 			"type1Match": (guessType1 == targetType1),
-        	"type2Match": (guessType2 == targetType2),
+			"type2Match": (guessType2 == targetType2),
 			"type1MatchWrongPlace": (guessType1 == targetType2),
-        	"type2MatchWrongPlace": (guessType2 == targetType1),
+			"type2MatchWrongPlace": (guessType2 == targetType1),
 			"guessedGen":  guessGen,
 			"correctGen":  targetGen,
 			"weightHint": weightHint,
 			"heightHint": heightHint,
+			"guessPosition": guessEvo.Position,
+			"targetPosition": targetEvo.Position,
+			"guessFullyEvolved": guessEvo.IsFullyEvolved,
+			"targetFullyEvolved": targetEvo.IsFullyEvolved,
 			"distance":   int(math.Abs(float64(targetP.ID - guessP.ID))),
 		},
 		GuessCounter: guessCount,
 	}
+	
 
 	now := time.Now()
 	midnight := time.Date(
