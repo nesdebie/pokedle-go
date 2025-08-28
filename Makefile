@@ -13,7 +13,7 @@ $(NAME):
 	go build -o $(NAME) $(SRC)
 	@echo "$(RED)Usage: $(GREEN)./$(NAME)$(NC)"
 	@echo "$(RED)Dev mode: $(GREEN)./$(NAME) dev$(NC)"
-	go run genkey.go
+	go run scripts/genkey.go
 
 csv: names gen evolutions regions
 
