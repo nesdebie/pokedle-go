@@ -6,10 +6,9 @@
 /*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
-/*   Updated: 2025/08/28 13:45:08 by nesdebie         ###   ########.fr       */
+/*   Updated: 2025/08/29 19:36:14 by nesdebie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 package main
 
@@ -19,8 +18,9 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
-	"log"
+	"io"
 	"math"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -68,6 +68,27 @@ type Pokemon struct {
 	Stats   []Stat      `json:"stats"`
 	Types   []TypeEntry `json:"types"`
 	Sprites Sprites     `json:"sprites"`
+}
+
+type FlavorTextEntry struct {
+	FlavorText string `json:"flavor_text"`
+	Language   struct {
+		Name string `json:"name"`
+	} `json:"language"`
+}
+
+type SpeciesResponse struct {
+	FlavorTextEntries []FlavorTextEntry `json:"flavor_text_entries"`
+}
+
+type Cries struct {
+	Latest string `json:"latest"`
+}
+
+type PokemonDetail struct {
+	Id    int         `json:"id"`
+	Types []TypeEntry `json:"types"`
+	Cries Cries       `json:"cries"`
 }
 
 // ---------------- Local name mapping ----------------
@@ -225,7 +246,6 @@ func dayKey(t time.Time) string {
 	return t.UTC().Format("2006-01-02")
 }
 
-
 func loadEnvKey(filename, key string) string {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -303,36 +323,6 @@ func NewServer() *Server {
 }
 
 // ---------------- Helpers ----------------
-
-func fetchPokemon(id int) (*Pokemon, error) {
-	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%d", id)
-	resp, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("pokeapi status: %d", resp.StatusCode)
-	}
-	var p Pokemon
-	if err := json.NewDecoder(resp.Body).Decode(&p); err != nil {
-		return nil, err
-	}
-	return &p, nil
-}
-
-func extractTypes(p *Pokemon) (string, string) {
-    t1, t2 := "(none)", "(none)"
-    for _, te := range p.Types {
-        if te.Slot == 1 {
-            t1 = strings.ToUpper(te.Type.Name)
-        } else if te.Slot == 2 {
-            t2 = strings.ToUpper(te.Type.Name)
-        }
-    }
-    return t1, t2
-}
-
 // ---------------- HTTP Handlers ----------------
 
 func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
@@ -407,7 +397,6 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 	guessEvo := evoMap[guessP.ID]
 	targetEvo := evoMap[targetP.ID]
 	
-
 	guessType1, guessType2 := extractTypes(guessP)
 	targetType1, targetType2 := extractTypes(targetP)
 
@@ -474,7 +463,6 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		GuessCounter: guessCount,
 	}
 	
-
 	now := time.Now()
 	midnight := time.Date(
 		now.Year(), now.Month(), now.Day()+1,
@@ -520,13 +508,6 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, resp)
 }
 
-func writeJSON(w http.ResponseWriter, v any) {
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	enc := json.NewEncoder(w)
-	enc.SetIndent("", "  ")
-	_ = enc.Encode(v)
-}
-
 func (s *Server) handleToday(w http.ResponseWriter, r *http.Request) {
 	idx := pickDailyIndex(s.names, time.Now().UTC())
 
@@ -545,6 +526,140 @@ func (s *Server) handleToday(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (s *Server) handleHints(w http.ResponseWriter, r *http.Request) {
+	idx := pickDailyIndex(s.names, time.Now().UTC())
+	targetID := s.names.idAt(idx)
+
+	cookie, err := r.Cookie("guesses")
+	var guessCount int
+	if err == nil {
+		guessCount, _ = strconv.Atoi(cookie.Value)
+	}
+
+	tier := guessCount / 3
+	desc := ""
+	types := []string{}
+	cryPath := ""
+
+	if tier >= 1 {
+		desc = fetchDescriptions(targetID)
+	}
+	if tier >= 2 {
+		p, _ := fetchPokemonDetail(targetID)
+		for _, t := range p.Types {
+			types = append(types, strings.ToUpper(t.Type.Name))
+		}
+	}
+	if tier >= 3 {
+		p, _ := fetchPokemonDetail(targetID)
+		if p != nil && p.Cries.Latest != "" {
+			cryPath = downloadCryToStatic(targetID, p.Cries.Latest)
+		}
+	}
+
+	writeJSON(w, map[string]any{
+		"description": desc,
+		"types":       types,
+		"cry":         cryPath,
+		"tier":        tier,
+	})
+}
+
+func fetchPokemon(id int) (*Pokemon, error) {
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%d", id)
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("pokeapi status: %d", resp.StatusCode)
+	}
+	var p Pokemon
+	if err := json.NewDecoder(resp.Body).Decode(&p); err != nil {
+		return nil, err
+	}
+	return &p, nil
+}
+
+func fetchPokemonDetail(id int) (*PokemonDetail, error) {
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%d/", id)
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	var p PokemonDetail
+	if err := json.NewDecoder(resp.Body).Decode(&p); err != nil {
+		return nil, err
+	}
+	return &p, nil
+}
+
+func cleanFlavorText(text string) string {
+	text = strings.ReplaceAll(text, "\n", " ")
+	text = strings.ReplaceAll(text, "\f", " ")
+	return strings.TrimSpace(text)
+}
+
+func fetchDescriptions(id int) string {
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon-species/%d/", id)
+	resp, err := http.Get(url)
+	if err != nil {
+		return ""
+	}
+	defer resp.Body.Close()
+	var data SpeciesResponse
+	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
+		return ""
+	}
+	for _, entry := range data.FlavorTextEntries {
+		if entry.Language.Name == "en" {
+			return cleanFlavorText(entry.FlavorText)
+		}
+	}
+	return ""
+}
+
+func downloadCryToStatic(id int, url string) string {
+	resp, err := http.Get(url)
+	if err != nil || resp.StatusCode != 200 {
+		return ""
+	}
+	defer resp.Body.Close()
+	filename := fmt.Sprintf("static/hint_%d.ogg", id)
+	out, err := os.Create(filename)
+	if err != nil {
+		return ""
+	}
+	defer out.Close()
+	_, _ = io.Copy(out, resp.Body)
+	return "/" + filename
+}
+
+func extractTypes(p *Pokemon) (string, string) {
+    t1, t2 := "(none)", "(none)"
+    for _, te := range p.Types {
+        if te.Slot == 1 {
+            t1 = strings.ToUpper(te.Type.Name)
+        } else if te.Slot == 2 {
+            t2 = strings.ToUpper(te.Type.Name)
+        }
+    }
+    return t1, t2
+}
+
+// ---------------- HTTP Handlers ----------------
+
+func writeJSON(w http.ResponseWriter, v any) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	enc := json.NewEncoder(w)
+	enc.SetIndent("", "  ")
+	_ = enc.Encode(v)
+}
+
+// ---------------- Main ----------------
+
 func main() {
 	isDevMode = false
 	if len(os.Args) == 2 && os.Args[1] == "dev" {
@@ -558,6 +673,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", srv.staticFS))
 	http.HandleFunc("/api/guess", srv.handleGuess)
 	http.HandleFunc("/api/today", srv.handleToday)
+	http.HandleFunc("/api/hints", srv.handleHints)
 
 	port := os.Getenv("PORT")
 	if port == "" {

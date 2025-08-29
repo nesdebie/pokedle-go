@@ -3,6 +3,7 @@ const input = document.getElementById("guessInput");
 const list = document.getElementById("guesses");
 const statusEl = document.getElementById("status");
 const counterEl = document.getElementById("counter");
+const hintsDiv = document.getElementById("hints");
 
 const positionLabels = ["BASIC", "LVL 1", "LVL 2"];
 
@@ -77,6 +78,28 @@ function updateStatus(data) {
   }
 }
 
+async function updateHints() {
+  const res = await fetch("/api/hints");
+  const data = await res.json();
+  hintsDiv.innerHTML = "";
+  if (data.description) {
+    const p = document.createElement("p");
+    p.textContent = "Hint 1 (description): " + data.description;
+    hintsDiv.appendChild(p);
+  }
+  if (data.types && data.types.length > 0) {
+    const p = document.createElement("p");
+    p.textContent = "Hint 2 (types): " + data.types.join(", ");
+    hintsDiv.appendChild(p);
+  }
+  if (data.cry) {
+    const audio = document.createElement("audio");
+    audio.controls = true;
+    audio.src = data.cry;
+    hintsDiv.appendChild(audio);
+  }
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const guess = input.value.trim();
@@ -129,6 +152,8 @@ form.addEventListener("submit", async (e) => {
 
     li.appendChild(info);
     list.prepend(li);
+
+    await updateHints();
   } catch (err) {
     statusEl.textContent = "Network Error.";
     console.error(err);

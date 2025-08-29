@@ -42,7 +42,7 @@ regions:
 	go run scripts/update_regional_names_csv.go
 
 clean:
-	@rm -f $(NAME) go.mod go.sum .env
+	@rm -f $(NAME) go.mod go.sum static/hint*.ogg .env
 
 re: clean all
 
