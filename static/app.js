@@ -92,7 +92,6 @@ async function updateHints() {
   const res = await fetch("/api/hints");
   const data = await res.json();
 
-  // on vide uniquement la zone dynamique
   hintsDynamic.innerHTML = "";
 
   if (data.description) {
