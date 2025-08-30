@@ -1,3 +1,5 @@
+import lottieWeb from 'https://cdn.skypack.dev/lottie-web';
+
 const form = document.getElementById("guessForm");
 const input = document.getElementById("guessInput");
 const list = document.getElementById("guesses");
@@ -95,22 +97,112 @@ async function updateHints() {
   hintsDynamic.innerHTML = "";
 
   if (data.description) {
+    const container = document.createElement("div");
+    container.id = "audio-player-container";
+
     const p = document.createElement("p");
-    p.textContent = "Pokedex: " + data.description;
-    hintsDynamic.appendChild(p);
+    container.appendChild(p);
+
+    const content = document.createElement("span");
+    content.textContent = data.description;
+    container.appendChild(content);
+
+    hintsDynamic.appendChild(container);
   }
+
   if (data.types && data.types.length > 0) {
+    const container = document.createElement("div");
+    container.id = "audio-player-container";
+
     const p = document.createElement("p");
-    p.textContent = "Types: " + data.types.join(" - ");
-    hintsDynamic.appendChild(p);
+    container.appendChild(p);
+
+    const content = document.createElement("span");
+    content.textContent = data.types.join(" - ");
+    container.appendChild(content);
+
+    hintsDynamic.appendChild(container);
   }
+
   if (data.cry) {
+    const container = document.createElement("div");
+    container.id = "audio-player-container";
+
+    const p = document.createElement("p");
+    container.appendChild(p);
+
+    const playIconContainer = document.createElement("button");
+    playIconContainer.id = "play-icon";
+    container.appendChild(playIconContainer);
+
+    const currentTime = document.createElement("span");
+    currentTime.id = "current-time";
+    currentTime.className = "time";
+    currentTime.textContent = "0:00";
+    container.appendChild(currentTime);
+
+    const seekSlider = document.createElement("input");
+    seekSlider.type = "range";
+    seekSlider.id = "seek-slider";
+    seekSlider.max = "100";
+    seekSlider.value = "0";
+    container.appendChild(seekSlider);
+
     const audio = document.createElement("audio");
-    audio.controls = true;
     audio.src = data.cry;
-    hintsDynamic.appendChild(audio);
+    audio.id = "cry-audio";
+    container.appendChild(audio);
+
+    hintsDynamic.appendChild(container);
+
+    let playState = 'play';
+    const playAnimation = lottieWeb.loadAnimation({
+      container: playIconContainer,
+      path: 'https://maxst.icons8.com/vue-static/landings/animated-icons/icons/pause/pause.json',
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      name: "Play Animation",
+    });
+    playAnimation.goToAndStop(14, true);
+
+    playIconContainer.addEventListener('click', () => {
+      if (playState === 'play') {
+        audio.play();
+        playAnimation.playSegments([14, 27], true);
+        playState = 'pause';
+      } else {
+        audio.pause();
+        playAnimation.playSegments([0, 14], true);
+        playState = 'play';
+      }
+    });
+
+    const showRangeProgress = (rangeInput) => {
+      container.style.setProperty('--seek-before-width', rangeInput.value / rangeInput.max * 100 + '%');
+    };
+
+    seekSlider.addEventListener('input', (e) => {
+      showRangeProgress(e.target);
+      audio.currentTime = (audio.duration * seekSlider.value) / 100;
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      seekSlider.value = (audio.currentTime / audio.duration) * 100;
+      currentTime.textContent = formatTime(audio.currentTime);
+      duration.textContent = formatTime(audio.duration);
+      showRangeProgress(seekSlider);
+    });
+
+    function formatTime(time) {
+      if (isNaN(time)) return "0:00";
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.floor(time % 60);
+      return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+    }
   }
 }
+
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();

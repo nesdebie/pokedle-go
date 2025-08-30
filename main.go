@@ -6,7 +6,7 @@
 /*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
-/*   Updated: 2025/08/30 13:12:29 by nesdebie         ###   ########.fr       */
+/*   Updated: 2025/08/30 20:49:20 by nesdebie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ import (
 )
 
 var isDevMode bool
-
-// ---------------- Data models from PokeAPI  ----------------
 
 type Stat struct {
 	BaseStat int `json:"base_stat"`
@@ -91,7 +89,6 @@ type PokemonDetail struct {
 	Cries Cries       `json:"cries"`
 }
 
-// ---------------- Local name mapping ----------------
 
 type NamesRow struct {
 	ID int
@@ -108,8 +105,8 @@ type EvolutionData struct {
 }
 
 type NameIndex struct {
-	idByKey map[string]int // normalized name -> id
-	rows    []NamesRow      // keep list for deterministic indexing
+	idByKey map[string]int
+	rows    []NamesRow
 }
 
 func removeAccents(s string) string {
@@ -142,7 +139,7 @@ func loadEvolutionData(path string) (map[int]EvolutionData, error) {
 
     evoData := make(map[int]EvolutionData)
 
-    for _, row := range rows[1:] { // skip header
+    for _, row := range rows[1:] {
         id, err1 := strconv.Atoi(row[0])
         pos, err2 := strconv.Atoi(row[1])
         evo, err3 := strconv.Atoi(row[2])
@@ -240,7 +237,6 @@ func (n *NameIndex) idAt(i int) int {
 	return n.rows[i].ID
 }
 
-// ---------------- Daily target logic ----------------
 
 func dayKey(t time.Time) string {
 	return t.UTC().Format("2006-01-02")
@@ -290,7 +286,6 @@ func pickDailyIndex(names *NameIndex, t time.Time) int {
 	return int(v % uint64(names.maxIndex()))
 }
 
-// ---------------- Server state ----------------
 
 type Server struct {
 	names    *NameIndex
@@ -321,9 +316,6 @@ func NewServer() *Server {
 		staticFS: staticFS,
 	}
 }
-
-// ---------------- Helpers ----------------
-// ---------------- HTTP Handlers ----------------
 
 func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
@@ -649,7 +641,6 @@ func extractTypes(p *Pokemon) (string, string) {
     return t1, t2
 }
 
-// ---------------- HTTP Handlers ----------------
 
 func writeJSON(w http.ResponseWriter, v any) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -658,7 +649,6 @@ func writeJSON(w http.ResponseWriter, v any) {
 	_ = enc.Encode(v)
 }
 
-// ---------------- Main ----------------
 
 func main() {
 	isDevMode = false
