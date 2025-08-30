@@ -6,7 +6,7 @@
 /*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
-/*   Updated: 2025/08/29 19:36:14 by nesdebie         ###   ########.fr       */
+/*   Updated: 2025/08/30 13:12:29 by nesdebie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -542,7 +542,10 @@ func (s *Server) handleHints(w http.ResponseWriter, r *http.Request) {
 	cryPath := ""
 
 	if tier >= 1 {
-		desc = fetchDescriptions(targetID)
+		p, _ := fetchPokemonDetail(targetID)
+		if p != nil && p.Cries.Latest != "" {
+			cryPath = downloadCryToStatic(targetID, p.Cries.Latest)
+		}
 	}
 	if tier >= 2 {
 		p, _ := fetchPokemonDetail(targetID)
@@ -551,10 +554,7 @@ func (s *Server) handleHints(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if tier >= 3 {
-		p, _ := fetchPokemonDetail(targetID)
-		if p != nil && p.Cries.Latest != "" {
-			cryPath = downloadCryToStatic(targetID, p.Cries.Latest)
-		}
+		desc = fetchDescriptions(targetID)
 	}
 
 	writeJSON(w, map[string]any{
@@ -614,7 +614,7 @@ func fetchDescriptions(id int) string {
 		return ""
 	}
 	for _, entry := range data.FlavorTextEntries {
-		if entry.Language.Name == "en" {
+		if entry.Language.Name == "fr" {
 			return cleanFlavorText(entry.FlavorText)
 		}
 	}

@@ -2,8 +2,8 @@ const form = document.getElementById("guessForm");
 const input = document.getElementById("guessInput");
 const list = document.getElementById("guesses");
 const statusEl = document.getElementById("status");
-const counterEl = document.getElementById("counter");
-const hintsDiv = document.getElementById("hints");
+const statusHints = document.getElementById("hints-status");
+const hintsDynamic = document.getElementById("hints-dynamic");
 
 const positionLabels = ["BASIC", "LVL 1", "LVL 2"];
 
@@ -50,8 +50,14 @@ function createHintsElement(hints) {
   container.appendChild(createTypeBadges(hints.type2, hints.type2Match, hints.type2MatchWrongPlace));
   container.appendChild(createGenBadge(hints.guessedGen, hints.correctGen));
 
-  const weightBadge = createBadge(hints.weightHint.startsWith(">") || hints.weightHint.startsWith("<") ? hints.weightHint : hints.weightHint, hints.weightHint.startsWith(">") || hints.weightHint.startsWith("<") ? "wrong" : "ok");
-  const heightBadge = createBadge(hints.heightHint.startsWith(">") || hints.heightHint.startsWith("<") ? hints.heightHint : hints.heightHint, hints.heightHint.startsWith(">") || hints.heightHint.startsWith("<") ? "wrong" : "ok");
+  const weightBadge = createBadge(
+    hints.weightHint.startsWith(">") || hints.weightHint.startsWith("<") ? hints.weightHint : hints.weightHint,
+    hints.weightHint.startsWith(">") || hints.weightHint.startsWith("<") ? "wrong" : "ok"
+  );
+  const heightBadge = createBadge(
+    hints.heightHint.startsWith(">") || hints.heightHint.startsWith("<") ? hints.heightHint : hints.heightHint,
+    hints.heightHint.startsWith(">") || hints.heightHint.startsWith("<") ? "wrong" : "ok"
+  );
   container.appendChild(weightBadge);
   container.appendChild(heightBadge);
 
@@ -62,41 +68,48 @@ function createHintsElement(hints) {
 }
 
 function updateStatus(data) {
+  if (data.guessCounter === 0) {
+    statusHints.textContent = "";
+    return;
+  }
   const tier = Math.floor(data.guessCounter / 3);
-  switch(tier) {
+  switch (tier) {
     case 0:
-      statusEl.textContent = `Attempts : ${data.guessCounter}. First hint coming after ${3 - data.guessCounter} other attempts.`;
+      statusHints.textContent = `Attempt #${data.guessCounter}. ${3 - data.guessCounter} more guess(es) before Hint #1.`;
       break;
     case 1:
-      statusEl.textContent = `Attempts : ${data.guessCounter}. Next hint coming after ${6 - data.guessCounter} other attempts.`;
+      statusHints.textContent = `Attempt #${data.guessCounter}. ${6 - data.guessCounter} more guess(es) before Hint #2.`;
       break;
     case 2:
-      statusEl.textContent = `Attempts : ${data.guessCounter}. Last hint coming after ${9 - data.guessCounter} other attempts.`;
+      statusHints.textContent = `Attempt #${data.guessCounter}. ${9 - data.guessCounter} more guess(es) before Hint #3.`;
       break;
     default:
-      statusEl.textContent = `Attempts : ${data.guessCounter}`;
+      statusHints.textContent = `Attempt #${data.guessCounter}`;
   }
 }
 
 async function updateHints() {
   const res = await fetch("/api/hints");
   const data = await res.json();
-  hintsDiv.innerHTML = "";
+
+  // on vide uniquement la zone dynamique
+  hintsDynamic.innerHTML = "";
+
   if (data.description) {
     const p = document.createElement("p");
-    p.textContent = "Hint 1 (description): " + data.description;
-    hintsDiv.appendChild(p);
+    p.textContent = "Pokedex: " + data.description;
+    hintsDynamic.appendChild(p);
   }
   if (data.types && data.types.length > 0) {
     const p = document.createElement("p");
-    p.textContent = "Hint 2 (types): " + data.types.join(", ");
-    hintsDiv.appendChild(p);
+    p.textContent = "Types: " + data.types.join(" - ");
+    hintsDynamic.appendChild(p);
   }
   if (data.cry) {
     const audio = document.createElement("audio");
     audio.controls = true;
     audio.src = data.cry;
-    hintsDiv.appendChild(audio);
+    hintsDynamic.appendChild(audio);
   }
 }
 
@@ -132,7 +145,7 @@ form.addEventListener("submit", async (e) => {
     const info = document.createElement("div");
     const title = document.createElement("div");
     title.className = "name";
-    title.textContent = `#${data.guess.id} — ${data.guess.name}`;
+    title.textContent = `${data.guess.name}`;
     info.appendChild(title);
 
     const hintsEl = createHintsElement(data.hints);
@@ -141,7 +154,7 @@ form.addEventListener("submit", async (e) => {
     if (data.correct && data.reveal) {
       const rev = document.createElement("div");
       rev.className = "reveal";
-      rev.textContent = `Congrats! The Pokémon of the day was #${data.reveal.id} — ${data.reveal.name}.`;
+      rev.textContent = `Congrats! The Pokémon of the day was ${data.reveal.name}.`;
       info.appendChild(rev);
 
       input.disabled = true;
@@ -158,4 +171,5 @@ form.addEventListener("submit", async (e) => {
     statusEl.textContent = "Network Error.";
     console.error(err);
   }
+  statusEl.textContent = "";
 });
