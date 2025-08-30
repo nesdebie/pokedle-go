@@ -104,7 +104,7 @@ async function updateHints() {
     container.appendChild(p);
 
     const content = document.createElement("span");
-    content.textContent = data.description;
+    content.textContent = "\"" + data.description + "\"";
     container.appendChild(content);
 
     hintsDynamic.appendChild(container);
