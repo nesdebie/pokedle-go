@@ -1,61 +1,61 @@
-pokemon_id,name,generation_id
-10091,rattata-alola,7
-10092,raticate-alola,7
-10093,raticate-totem-alola,7
-10099,pikachu-alola-cap,7
-10100,raichu-alola,7
-10101,sandshrew-alola,7
-10102,sandslash-alola,7
-10103,vulpix-alola,7
-10104,ninetales-alola,7
-10105,diglett-alola,7
-10106,dugtrio-alola,7
-10107,meowth-alola,7
-10108,persian-alola,7
-10109,geodude-alola,7
-10110,graveler-alola,7
-10111,golem-alola,7
-10112,grimer-alola,7
-10113,muk-alola,7
-10114,exeggutor-alola,7
-10115,marowak-alola,7
-10161,meowth-galar,8
-10162,ponyta-galar,8
-10163,rapidash-galar,8
-10164,slowpoke-galar,8
-10165,slowbro-galar,8
-10166,farfetchd-galar,8
-10167,weezing-galar,8
-10168,mr-mime-galar,8
-10169,articuno-galar,8
-10170,zapdos-galar,8
-10171,moltres-galar,8
-10172,slowking-galar,8
-10173,corsola-galar,8
-10174,zigzagoon-galar,8
-10175,linoone-galar,8
-10176,darumaka-galar,8
-10177,darmanitan-galar-standard,8
-10178,darmanitan-galar-zen,8
-10179,yamask-galar,8
-10180,stunfisk-galar,8
-10229,growlithe-hisui,9
-10230,arcanine-hisui,9
-10231,voltorb-hisui,9
-10232,electrode-hisui,9
-10233,typhlosion-hisui,9
-10234,qwilfish-hisui,9
-10235,sneasel-hisui,9
-10236,samurott-hisui,9
-10237,lilligant-hisui,9
-10238,zorua-hisui,9
-10239,zoroark-hisui,9
-10240,braviary-hisui,9
-10241,sliggoo-hisui,9
-10242,goodra-hisui,9
-10243,avalugg-hisui,9
-10244,decidueye-hisui,9
-10250,tauros-paldea-combat-breed,9
-10251,tauros-paldea-blaze-breed,9
-10252,tauros-paldea-aqua-breed,9
-10253,wooper-paldea,9
+id,en,fr,de,es,it,gen
+10091,Alolan Rattata,Rattata d’Alola,Alola Rattfratz,Alolan Rattata,Alolan Rattata,7
+10092,Alolan Raticate,Rattatac d’Alola,Alola Rattikarl,Alolan Raticate,Alolan Raticate,7
+10093,Totem Alolan Raticate,Rattatac d’Alola Dominant,Totem Alola Rattikarl,Totem Alolan Raticate,Totem Alolan Raticate,7
+10099,Alola Cap Pikachu,Pikachu Casquette d’Alola,Pikachu (Alola-Kappe),Alola Cap Pikachu,Alola Cap Pikachu,7
+10100,Alolan Raichu,Raichu d’Alola,Alola Raichu,Alolan Raichu,Alolan Raichu,7
+10101,Alolan Sandshrew,Sabelette d’Alola,Alola Sandan,Alolan Sandshrew,Alolan Sandshrew,7
+10102,Alolan Sandslash,Sablaireau d’Alola,Alola Sandamer,Alolan Sandslash,Alolan Sandslash,7
+10103,Alolan Vulpix,Goupix d’Alola,Alola Vulpix,Alolan Vulpix,Alolan Vulpix,7
+10104,Alolan Ninetales,Feunard d’Alola,Alola Vulnona,Alolan Ninetales,Alolan Ninetales,7
+10105,Alolan Diglett,Taupiqueur d’Alola,Alola Digda,Alolan Diglett,Alolan Diglett,7
+10106,Alolan Dugtrio,Triopikeur d’Alola,Alola Digdri,Alolan Dugtrio,Alolan Dugtrio,7
+10107,Alolan Meowth,Miaouss d’Alola,Alola Mauzi,Alolan Meowth,Alolan Meowth,7
+10108,Alolan Persian,Persian d’Alola,Alola Snobilikat,Alolan Persian,Alolan Persian,7
+10109,Alolan Geodude,Racaillou d’Alola,Alola Kleinstein,Alolan Geodude,Alolan Geodude,7
+10110,Alolan Graveler,Gravalanch d’Alola,Alola Georok,Alolan Graveler,Alolan Graveler,7
+10111,Alolan Golem,Grolem d’Alola,Alola Geowaz,Alolan Golem,Alolan Golem,7
+10112,Alolan Grimer,Tadmorv d’Alola,Alola Sleima,Alolan Grimer,Alolan Grimer,7
+10113,Alolan Muk,Grotadmorv d’Alola,Alola Sleimok,Alolan Muk,Alolan Muk,7
+10114,Alolan Exeggutor,Noadkoko d’Alola,Alola Kokowei,Alolan Exeggutor,Alolan Exeggutor,7
+10115,Alolan Marowak,Ossatueur d’Alola,Alola Knogga,Alolan Marowak,Alolan Marowak,7
+10161,Galarian Meowth,Miaouss de Galar,Galar Mauzi,Galarian Meowth,Galarian Meowth,8
+10162,Galarian Ponyta,Ponyta de Galar,Galar Ponita,Galarian Ponyta,Galarian Ponyta,8
+10163,Galarian Rapidash,Galopa de Galar,Galar Gallopa,Galarian Rapidash,Galarian Rapidash,8
+10164,Galarian Slowpoke,Ramoloss de Galar,Galar Flegmon,Galarian Slowpoke,Galarian Slowpoke,8
+10165,Galarian Slowbro,Flagadoss de Galar,Galar Lahmus,Galarian Slowbro,Galarian Slowbro,8
+10166,Galarian Farfetch’d,Canarticho de Galar,Galar Porenta,Galarian Farfetch’d,Galarian Farfetch’d,8
+10167,Galarian Weezing,Smogogo de Galar,Galar Smogmog,Galarian Weezing,Galarian Weezing,8
+10168,Galarian Mr. Mime,M. Mime de Galar,Galar Pantimos,Galarian Mr. Mime,Galarian Mr. Mime,8
+10169,Galarian Articuno,Artikodin de Galar,Galar Arktos,Galarian Articuno,Galarian Articuno,8
+10170,Galarian Zapdos,Électhor de Galar,Galar Zapdos,Galarian Zapdos,Galarian Zapdos,8
+10171,Galarian Moltres,Sulfura de Galar,Galar Lavados,Galarian Moltres,Galarian Moltres,8
+10172,Galarian Slowking,Roigada de Galar,Galar Laschoking,Galarian Slowking,Galarian Slowking,8
+10173,Galarian Corsola,Corayon de Galar,Galar Corasonn,Galarian Corsola,Galarian Corsola,8
+10174,Galarian Zigzagoon,Zigzaton de Galar,Galar Zigzachs,Galarian Zigzagoon,Galarian Zigzagoon,8
+10175,Galarian Linoone,Linéon de Galar,Galar Geradaks,Galarian Linoone,Galarian Linoone,8
+10176,Galarian Darumaka,Darumarond de Galar,Galar Flampion,Galarian Darumaka,Galarian Darumaka,8
+10177,Standard Galarian Darmanitan,Darumacho de Galar Normal,Galar Flampivian,Standard Galarian Darmanitan,Standard Galarian Darmanitan,8
+10178,Zen Galarian Darmanitan,Darumacho de Galar Transe,Galar Flampivian (Trance),Zen Galarian Darmanitan,Zen Galarian Darmanitan,8
+10179,Galarian Yamask,Tutafeh de Galar,Galar Makabaja,Galarian Yamask,Galarian Yamask,8
+10180,Galarian Stunfisk,Limonde de Galar,Galar Flunschlik,Galarian Stunfisk,Galarian Stunfisk,8
+10229,Hisuian Growlithe,Caninos de Hisui,Hisui Fukano,Hisuian Growlithe,Hisuian Growlithe,9
+10230,Hisuian Arcanine,Arcanin de Hisui,Hisui Arkani,Hisuian Arcanine,Hisuian Arcanine,9
+10231,Hisuian Voltorb,Voltorbe de Hisui,Hisui Voltobal,Hisuian Voltorb,Hisuian Voltorb,9
+10232,Hisuian Electrode,Électrode de Hisui,Hisui Lektrobal,Hisuian Electrode,Hisuian Electrode,9
+10233,Hisuian Typhlosion,Typhlosion de Hisui,Hisui Tornupto,Hisuian Typhlosion,Hisuian Typhlosion,9
+10234,Hisuian Qwilfish,Qwilfish de Hisui,Hisui Baldorfish,Hisuian Qwilfish,Hisuian Qwilfish,9
+10235,Hisuian Sneasel,Farfuret de Hisui,Hisui Sniebel,Hisuian Sneasel,Hisuian Sneasel,9
+10236,Hisuian Samurott,Clamiral de Hisui,Hisui Admurai,Hisuian Samurott,Hisuian Samurott,9
+10237,Hisuian Lilligant,Fragilady de Hisui,Hisui Dressella,Hisuian Lilligant,Hisuian Lilligant,9
+10238,Hisuian Zorua,Zorua de Hisui,Hisui Zorua,Hisuian Zorua,Hisuian Zorua,9
+10239,Hisuian Zoroark,Zoroark de Hisui,Hisui Zoroark,Hisuian Zoroark,Hisuian Zoroark,9
+10240,Hisuian Braviary,Gueriaigle de Hisui,Hisui Washakwil,Hisuian Braviary,Hisuian Braviary,9
+10241,Hisuian Sliggoo,Colimucus de Hisui,Hisui Viscargot,Hisuian Sliggoo,Hisuian Sliggoo,9
+10242,Hisuian Goodra,Muplodocus de Hisui,Hisui Viscogon,Hisuian Goodra,Hisuian Goodra,9
+10243,Hisuian Avalugg,Séracrawl de Hisui,Hisui Arktilas,Hisuian Avalugg,Hisuian Avalugg,9
+10244,Hisuian Decidueye,Archéduc de Hisui,Hisui Silvarro,Hisuian Decidueye,Hisuian Decidueye,9
+10250,Paldean Tauros (Combat Breed),Tauros de Paldéa Race Combative,Paldean Tauros (Combat Breed),Paldean Tauros (Combat Breed),Paldean Tauros (Combat Breed),9
+10251,Paldean Tauros (Blaze Breed),Tauros de Paldéa Race Flamboyante,Paldean Tauros (Blaze Breed),Paldean Tauros (Blaze Breed),Paldean Tauros (Blaze Breed),9
+10252,Paldean Tauros (Aqua Breed),Tauros de Paldéa Race Aquatique,Paldean Tauros (Aqua Breed),Paldean Tauros (Aqua Breed),Paldean Tauros (Aqua Breed),9
+10253,Paldean Wooper,Axoloto de Paldéa,Paldean Wooper,Paldean Wooper,Paldean Wooper,9

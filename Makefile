@@ -15,7 +15,7 @@ $(NAME):
 	@echo "$(RED)Dev mode: $(GREEN)./$(NAME) dev$(NC)"
 	go run scripts/genkey.go
 
-csv: names gen evolutions regions
+csv: names gen evolutions regionals
 
 names:
 	@if [ -f data/pokemon_names_multilang.csv ]; then \
@@ -35,7 +35,7 @@ evolutions:
 	fi
 	go run scripts/update_evolutions_lines_csv.go
 
-regions:
+regionals:
 	@if [ -f data/pokemon_forms.csv ]; then \
 		rm data/pokemon_forms.csv; \
 	fi
@@ -46,4 +46,4 @@ clean:
 
 re: clean all
 
-.PHONY: all clean names gen re evolutions csv
+.PHONY: all clean names gen re evolutions csv regionals

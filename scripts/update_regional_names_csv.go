@@ -15,6 +15,13 @@ const baseURL = "https://pokeapi.co/api/v2"
 
 var formsToKeep = regexp.MustCompile(`(galar|hisui|alola|paldea)`)
 
+type Name struct {
+	Name     string `json:"name"`
+	Language struct {
+		Name string `json:"name"`
+	} `json:"language"`
+}
+
 type PokemonForm struct {
 	ID      int    `json:"id"`
 	Name    string `json:"name"`
@@ -22,6 +29,7 @@ type PokemonForm struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
 	} `json:"pokemon"`
+	Names []Name `json:"names"`
 }
 
 type PokemonResponse struct {
@@ -103,6 +111,15 @@ func getGenerationFromName(name string) string {
 	}
 }
 
+func getNameInLanguage(names []Name, lang string, fallback string) string {
+	for _, n := range names {
+		if n.Language.Name == lang {
+			return n.Name
+		}
+	}
+	return fallback
+}
+
 func main() {
 	maxID := getMaxFormID()
 	fmt.Printf("Max form ID: %d\n", maxID)
@@ -116,7 +133,15 @@ func main() {
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
-	writer.Write([]string{"pokemon_id", "name", "generation_id"})
+	writer.Write([]string{
+		"id",
+		"en",
+		"fr",
+		"de",
+		"es",
+		"it",
+		"gen",
+	})
 
 	for id := 10001; id <= maxID; id++ {
 		url := fmt.Sprintf("%s/pokemon-form/%d", baseURL, id)
@@ -131,11 +156,19 @@ func main() {
 		}
 
 		pokemonID := getPokemonIDFromURL(pf.Pokemon.URL)
+		nameEn := getNameInLanguage(pf.Names, "en", "")
+		nameFr := getNameInLanguage(pf.Names, "fr", nameEn)
+		nameDe := getNameInLanguage(pf.Names, "de", nameEn)
+		nameEs := getNameInLanguage(pf.Names, "es", nameEn)
+		nameIt := getNameInLanguage(pf.Names, "it", nameEn)
 		genID := getGenerationFromName(pf.Name)
-
 		writer.Write([]string{
 			strconv.Itoa(pokemonID),
-			pf.Name,
+			nameEn,
+			nameFr,
+			nameDe,
+			nameEs,
+			nameIt,
 			genID,
 		})
 	}
