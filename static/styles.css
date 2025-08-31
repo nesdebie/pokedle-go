@@ -195,15 +195,15 @@ button:hover {
     border-color: white;
 }
 
-.ice {
-    background: cyan;
+.flying {
+    background: rgb(137, 237, 237);
     color: black;
     border-color: white;
 }
 
 .fire {
     background: rgb(255, 68, 0);
-    color: black;
+    color: white;
     border-color: white;
 }
 

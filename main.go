@@ -6,7 +6,7 @@
 /*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
-/*   Updated: 2025/08/31 12:39:48 by nesdebie         ###   ########.fr       */
+/*   Updated: 2025/08/31 13:39:46 by nesdebie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -426,7 +426,7 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		OK:      true,
 		Correct: guessP.ID == targetP.ID,
 		Guess: map[string]any{
-			"id":     guessP.ID,
+//			"id":     guessP.ID,
 			"name":   guessP.Name,
 			"types":  []string{guessType1, guessType2},
 			"height": guessP.Height,
@@ -669,6 +669,6 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	log.Printf("Pokedle prototype running on :%s", port)
+	log.Printf("Pokedle prototype running on localhost:%s", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
