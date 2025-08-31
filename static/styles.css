@@ -103,7 +103,8 @@ button:hover {
     padding: 2px 8px;
     border-radius: 999px;
     border: 1px solid #2f3a64;
-    margin-right: 6px;
+    margin-right: 2px;
+    margin-bottom: 2px;
     font-size: 12px;
 }
 
@@ -140,15 +141,18 @@ button:hover {
     border: 1px dashed #32547a;
 }
 
-#audio-player-container {
+#single-hint-container {
     --seek-before-width: 0%;
     --volume-before-width: 100%;
     --buffered-width: 0%;
-    position: relative;
+    display: flex;                  /* Flexbox */
+    align-items: center;            /* centrage vertical */
+    justify-content: center;        /* centrage horizontal */
+    gap: 10px;                      /* espace entre les éléments */
     margin: 20px auto;
     width: 95%;
     max-width: 500px;
-    height: 75px;
+    min-height: 75px;               /* hauteur minimale, mais plus "auto" */
     background: transparent;
     color: inherit;
     font-family: inherit;
@@ -157,12 +161,13 @@ button:hover {
     padding: 8px;
 }
 
-#audio-player-container::before {
+
+#single-hint-container::before {
     display: none;
 }
 
 
-#audio-player-container button {
+#single-hint-container button {
     padding: 0;
     border: 0;
     background: transparent;
@@ -183,7 +188,7 @@ button:hover {
   }
   
 
-#audio-player-container .time {
+#single-hint-container .time {
     display: inline-block;
     width: 37px;
     text-align: center;
@@ -193,7 +198,7 @@ button:hover {
     color: #c9d3ff;
 }
 
-#audio-player-container input[type="range"] {
+#single-hint-container input[type="range"] {
     position: relative;
     -webkit-appearance: none;
     width: 48%;
@@ -203,7 +208,7 @@ button:hover {
     background: transparent;
 }
 
-#audio-player-container input[type="range"]::-webkit-slider-runnable-track {
+#single-hint-container input[type="range"]::-webkit-slider-runnable-track {
     width: 100%;
     height: 3px;
     cursor: pointer;
@@ -214,7 +219,7 @@ button:hover {
     );
 }
 
-#audio-player-container input[type="range"]::before {
+#single-hint-container input[type="range"]::before {
     position: absolute;
     content: "";
     top: 8px;
@@ -225,7 +230,7 @@ button:hover {
     cursor: pointer;
 }
 
-#audio-player-container input[type="range"]::-webkit-slider-thumb {
+#single-hint-container input[type="range"]::-webkit-slider-thumb {
     position: relative;
     -webkit-appearance: none;
     box-sizing: content-box;
@@ -238,7 +243,7 @@ button:hover {
     margin: -7px 0 0 0;
 }
 
-#audio-player-container input[type="range"]:active::-webkit-slider-thumb {
+#single-hint-container input[type="range"]:active::-webkit-slider-thumb {
     transform: scale(1.2);
     background: #007db5;
 }

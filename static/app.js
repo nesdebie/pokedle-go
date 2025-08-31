@@ -6,6 +6,8 @@ const list = document.getElementById("guesses");
 const statusEl = document.getElementById("status");
 const statusHints = document.getElementById("hints-status");
 const hintsDynamic = document.getElementById("hints-dynamic");
+const hintsBox = document.getElementById("hints");
+
 
 const positionLabels = ["BASIC", "LVL 1", "LVL 2"];
 
@@ -74,6 +76,7 @@ function updateStatus(data) {
     statusHints.textContent = "";
     return;
   }
+  hintsBox.style.display = "block";
   const tier = Math.floor(data.guessCounter / 3);
   switch (tier) {
     case 0:
@@ -98,10 +101,7 @@ async function updateHints() {
 
   if (data.description) {
     const container = document.createElement("div");
-    container.id = "audio-player-container";
-
-    const p = document.createElement("p");
-    container.appendChild(p);
+    container.id = "single-hint-container";
 
     const content = document.createElement("span");
     content.textContent = "\"" + data.description + "\"";
@@ -112,10 +112,7 @@ async function updateHints() {
 
   if (data.types && data.types.length > 0) {
     const container = document.createElement("div");
-    container.id = "audio-player-container";
-
-    const p = document.createElement("p");
-    container.appendChild(p);
+    container.id = "single-hint-container";
 
     const content = document.createElement("span");
     content.textContent = data.types.join(" - ");
@@ -126,10 +123,7 @@ async function updateHints() {
 
   if (data.cry) {
     const container = document.createElement("div");
-    container.id = "audio-player-container";
-
-    const p = document.createElement("p");
-    container.appendChild(p);
+    container.id = "single-hint-container";
 
     const playIconContainer = document.createElement("button");
     playIconContainer.id = "play-icon";
@@ -252,6 +246,8 @@ form.addEventListener("submit", async (e) => {
       const guessButton = form.querySelector("button");
       if (guessButton) guessButton.disabled = true;
       form.style.display = "none";
+
+      hintsBox.style.display = "none";
     }
 
     li.appendChild(info);
