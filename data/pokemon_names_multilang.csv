@@ -1024,3 +1024,60 @@ id,en,fr,de,es,it
 1023,Iron Crown,Chef-de-Fer,Eisenhaupt,Ferrotesta,Capoferreo
 1024,Terapagos,Terapagos,Terapagos,Terapagos,Terapagos
 1025,Pecharunt,Pêchaminus,Infamomo,Pecharunt,Pecharunt
+10091,Alolan Rattata,Rattata d’Alola,Alola Rattfratz,Alolan Rattata,Alolan Rattata
+10092,Alolan Raticate,Rattatac d’Alola,Alola Rattikarl,Alolan Raticate,Alolan Raticate
+10100,Alolan Raichu,Raichu d’Alola,Alola Raichu,Alolan Raichu,Alolan Raichu
+10101,Alolan Sandshrew,Sabelette d’Alola,Alola Sandan,Alolan Sandshrew,Alolan Sandshrew
+10102,Alolan Sandslash,Sablaireau d’Alola,Alola Sandamer,Alolan Sandslash,Alolan Sandslash
+10103,Alolan Vulpix,Goupix d’Alola,Alola Vulpix,Alolan Vulpix,Alolan Vulpix
+10104,Alolan Ninetales,Feunard d’Alola,Alola Vulnona,Alolan Ninetales,Alolan Ninetales
+10105,Alolan Diglett,Taupiqueur d’Alola,Alola Digda,Alolan Diglett,Alolan Diglett
+10106,Alolan Dugtrio,Triopikeur d’Alola,Alola Digdri,Alolan Dugtrio,Alolan Dugtrio
+10107,Alolan Meowth,Miaouss d’Alola,Alola Mauzi,Alolan Meowth,Alolan Meowth
+10108,Alolan Persian,Persian d’Alola,Alola Snobilikat,Alolan Persian,Alolan Persian
+10109,Alolan Geodude,Racaillou d’Alola,Alola Kleinstein,Alolan Geodude,Alolan Geodude
+10110,Alolan Graveler,Gravalanch d’Alola,Alola Georok,Alolan Graveler,Alolan Graveler
+10111,Alolan Golem,Grolem d’Alola,Alola Geowaz,Alolan Golem,Alolan Golem
+10112,Alolan Grimer,Tadmorv d’Alola,Alola Sleima,Alolan Grimer,Alolan Grimer
+10113,Alolan Muk,Grotadmorv d’Alola,Alola Sleimok,Alolan Muk,Alolan Muk
+10114,Alolan Exeggutor,Noadkoko d’Alola,Alola Kokowei,Alolan Exeggutor,Alolan Exeggutor
+10115,Alolan Marowak,Ossatueur d’Alola,Alola Knogga,Alolan Marowak,Alolan Marowak
+10161,Galarian Meowth,Miaouss de Galar,Galar Mauzi,Galarian Meowth,Galarian Meowth
+10162,Galarian Ponyta,Ponyta de Galar,Galar Ponita,Galarian Ponyta,Galarian Ponyta
+10163,Galarian Rapidash,Galopa de Galar,Galar Gallopa,Galarian Rapidash,Galarian Rapidash
+10164,Galarian Slowpoke,Ramoloss de Galar,Galar Flegmon,Galarian Slowpoke,Galarian Slowpoke
+10165,Galarian Slowbro,Flagadoss de Galar,Galar Lahmus,Galarian Slowbro,Galarian Slowbro
+10166,Galarian Farfetch’d,Canarticho de Galar,Galar Porenta,Galarian Farfetch’d,Galarian Farfetch’d
+10167,Galarian Weezing,Smogogo de Galar,Galar Smogmog,Galarian Weezing,Galarian Weezing
+10168,Galarian Mr. Mime,M. Mime de Galar,Galar Pantimos,Galarian Mr. Mime,Galarian Mr. Mime
+10169,Galarian Articuno,Artikodin de Galar,Galar Arktos,Galarian Articuno,Galarian Articuno
+10170,Galarian Zapdos,Électhor de Galar,Galar Zapdos,Galarian Zapdos,Galarian Zapdos
+10171,Galarian Moltres,Sulfura de Galar,Galar Lavados,Galarian Moltres,Galarian Moltres
+10172,Galarian Slowking,Roigada de Galar,Galar Laschoking,Galarian Slowking,Galarian Slowking
+10173,Galarian Corsola,Corayon de Galar,Galar Corasonn,Galarian Corsola,Galarian Corsola
+10174,Galarian Zigzagoon,Zigzaton de Galar,Galar Zigzachs,Galarian Zigzagoon,Galarian Zigzagoon
+10175,Galarian Linoone,Linéon de Galar,Galar Geradaks,Galarian Linoone,Galarian Linoone
+10176,Galarian Darumaka,Darumarond de Galar,Galar Flampion,Galarian Darumaka,Galarian Darumaka
+10177,Standard Galarian Darmanitan,Darumacho de Galar,Galar Flampivian,Standard Galarian Darmanitan,Standard Galarian Darmanitan
+10179,Galarian Yamask,Tutafeh de Galar,Galar Makabaja,Galarian Yamask,Galarian Yamask
+10180,Galarian Stunfisk,Limonde de Galar,Galar Flunschlik,Galarian Stunfisk,Galarian Stunfisk
+10229,Hisuian Growlithe,Caninos de Hisui,Hisui Fukano,Hisuian Growlithe,Hisuian Growlithe
+10230,Hisuian Arcanine,Arcanin de Hisui,Hisui Arkani,Hisuian Arcanine,Hisuian Arcanine
+10231,Hisuian Voltorb,Voltorbe de Hisui,Hisui Voltobal,Hisuian Voltorb,Hisuian Voltorb
+10232,Hisuian Electrode,Électrode de Hisui,Hisui Lektrobal,Hisuian Electrode,Hisuian Electrode
+10233,Hisuian Typhlosion,Typhlosion de Hisui,Hisui Tornupto,Hisuian Typhlosion,Hisuian Typhlosion
+10234,Hisuian Qwilfish,Qwilfish de Hisui,Hisui Baldorfish,Hisuian Qwilfish,Hisuian Qwilfish
+10235,Hisuian Sneasel,Farfuret de Hisui,Hisui Sniebel,Hisuian Sneasel,Hisuian Sneasel
+10236,Hisuian Samurott,Clamiral de Hisui,Hisui Admurai,Hisuian Samurott,Hisuian Samurott
+10237,Hisuian Lilligant,Fragilady de Hisui,Hisui Dressella,Hisuian Lilligant,Hisuian Lilligant
+10238,Hisuian Zorua,Zorua de Hisui,Hisui Zorua,Hisuian Zorua,Hisuian Zorua
+10239,Hisuian Zoroark,Zoroark de Hisui,Hisui Zoroark,Hisuian Zoroark,Hisuian Zoroark
+10240,Hisuian Braviary,Gueriaigle de Hisui,Hisui Washakwil,Hisuian Braviary,Hisuian Braviary
+10241,Hisuian Sliggoo,Colimucus de Hisui,Hisui Viscargot,Hisuian Sliggoo,Hisuian Sliggoo
+10242,Hisuian Goodra,Muplodocus de Hisui,Hisui Viscogon,Hisuian Goodra,Hisuian Goodra
+10243,Hisuian Avalugg,Séracrawl de Hisui,Hisui Arktilas,Hisuian Avalugg,Hisuian Avalugg
+10244,Hisuian Decidueye,Archéduc de Hisui,Hisui Silvarro,Hisuian Decidueye,Hisuian Decidueye
+10250,Paldean Tauros (Combat Breed),Tauros de Paldéa Race Combative,Paldean Tauros (Combat Breed),Paldean Tauros (Combat Breed),Paldean Tauros (Combat Breed)
+10251,Paldean Tauros (Blaze Breed),Tauros de Paldéa Race Flamboyante,Paldean Tauros (Blaze Breed),Paldean Tauros (Blaze Breed),Paldean Tauros (Blaze Breed)
+10252,Paldean Tauros (Aqua Breed),Tauros de Paldéa Race Aquatique,Paldean Tauros (Aqua Breed),Paldean Tauros (Aqua Breed),Paldean Tauros (Aqua Breed)
+10253,Paldean Wooper,Axoloto de Paldéa,Paldean Wooper,Paldean Wooper,Paldean Wooper

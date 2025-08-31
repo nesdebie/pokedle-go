@@ -135,11 +135,11 @@ func main() {
 
 	writer.Write([]string{
 		"id",
-		"en",
-		"fr",
-		"de",
-		"es",
-		"it",
+//		"en",
+//		"fr",
+//		"de",
+//		"es",
+//		"it",
 		"gen",
 	})
 
@@ -156,19 +156,19 @@ func main() {
 		}
 
 		pokemonID := getPokemonIDFromURL(pf.Pokemon.URL)
-		nameEn := getNameInLanguage(pf.Names, "en", "")
-		nameFr := getNameInLanguage(pf.Names, "fr", nameEn)
-		nameDe := getNameInLanguage(pf.Names, "de", nameEn)
-		nameEs := getNameInLanguage(pf.Names, "es", nameEn)
-		nameIt := getNameInLanguage(pf.Names, "it", nameEn)
+		//nameEn := getNameInLanguage(pf.Names, "en", "")
+		//nameFr := getNameInLanguage(pf.Names, "fr", nameEn)
+		//nameDe := getNameInLanguage(pf.Names, "de", nameEn)
+		//nameEs := getNameInLanguage(pf.Names, "es", nameEn)
+		//nameIt := getNameInLanguage(pf.Names, "it", nameEn)
 		genID := getGenerationFromName(pf.Name)
 		writer.Write([]string{
 			strconv.Itoa(pokemonID),
-			nameEn,
-			nameFr,
-			nameDe,
-			nameEs,
-			nameIt,
+			//nameEn,
+			//nameFr,
+			//nameDe,
+			//nameEs,
+			//nameIt,
 			genID,
 		})
 	}
