@@ -94,6 +94,7 @@ type EvolutionData struct {
 
 type NameIndex struct {
 	idByKey map[string]int
+	enById  map[int]string
 	rows    []NamesRow
 }
 
@@ -185,7 +186,10 @@ func loadNames(csvPath string) (*NameIndex, error) {
 		return nil, fmt.Errorf("csv has no rows")
 	}
 
-	idx := &NameIndex{idByKey: make(map[string]int)}
+	idx := &NameIndex{
+		idByKey: make(map[string]int),
+		enById:  make(map[int]string),
+	}
 	for i, row := range records {
 		if i == 0 {
 			continue
@@ -205,7 +209,9 @@ func loadNames(csvPath string) (*NameIndex, error) {
 			ES: row[4],
 			IT: row[5],
 		}
+		
 		idx.rows = append(idx.rows, nr)
+		idx.enById[id] = nr.EN
 		for _, name := range row[1:6] {
 			k := normalizeKey(name)
 			if k != "" {
@@ -351,6 +357,8 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, GuessResp{OK: false, Error: "Incorrect Pokémon name", Correct: false})
 		return
 	}
+	pokeName := s.names.enById[id]
+
 
 	cookie, err = r.Cookie("guesses")
 	var guessCount int
@@ -415,7 +423,7 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		Correct: guessP.ID == targetP.ID,
 		Guess: map[string]any{
 //			"id":     guessP.ID,
-			"name":   guessP.Name,
+			"name":   pokeName,
 			"types":  []string{guessType1, guessType2},
 			"height": guessP.Height,
 			"weight": guessP.Weight,

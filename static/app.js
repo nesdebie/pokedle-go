@@ -252,7 +252,7 @@ form.addEventListener("submit", async (e) => {
     const info = document.createElement("div");
     const title = document.createElement("div");
     title.className = "name";
-    title.textContent = `${data.guess.name[0].toUpperCase() + data.guess.name.slice(1)}`;
+    title.textContent = `${data.guess.name}`;
     info.appendChild(title);
 
     const hintsEl = createHintsElement(data.hints);
@@ -261,7 +261,7 @@ form.addEventListener("submit", async (e) => {
     if (data.correct && data.reveal) {
       const rev = document.createElement("div");
       rev.className = "reveal";
-      rev.textContent = `Congrats! The Pokémon of the day was ${data.guess.name[0].toUpperCase() + data.guess.name.slice(1)}.`;
+      rev.textContent = `Congrats! The Pokémon of the day was ${data.guess.name}.`;
       info.appendChild(rev);
 
       input.disabled = true;
