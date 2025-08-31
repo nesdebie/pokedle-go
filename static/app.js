@@ -102,13 +102,31 @@ async function updateHints() {
   if (data.description) {
     const container = document.createElement("div");
     container.id = "single-hint-container";
-
+  
+    const descKeys = Object.keys(data.description);
+    let currentLang = "en";
     const content = document.createElement("span");
-    content.textContent = "\"" + data.description + "\"";
+    content.textContent = `"${data.description[currentLang]}"`;
     container.appendChild(content);
+  
+    const langButtons = document.createElement("div");
+    langButtons.className = "lang-buttons";
+  
+    descKeys.forEach(lang => {
+      const btn = document.createElement("button");
+      btn.textContent = lang.toUpperCase();
+      btn.addEventListener("click", () => {
+        currentLang = lang;
 
+        content.textContent = `"${data.description[currentLang]}"`;
+      });
+      langButtons.appendChild(btn);
+    });
+  
+    container.appendChild(langButtons);
     hintsDynamic.appendChild(container);
   }
+  
 
   if (data.types && data.types.length > 0) {
     const container = document.createElement("div");

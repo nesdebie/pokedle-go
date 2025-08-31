@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.go                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nesdebie <nesdebie@student.s19.be>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 12:50:34 by nesdebie          #+#    #+#             */
-/*   Updated: 2025/08/31 13:39:46 by nesdebie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 package main
 
 import (
@@ -529,33 +517,40 @@ func (s *Server) handleHints(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tier := guessCount / 3
-	desc := ""
-	types := []string{}
-	cryPath := ""
+
+	response := map[string]any{
+		"tier": tier,
+	}
 
 	if tier >= 1 {
 		p, _ := fetchPokemonDetail(targetID)
 		if p != nil && p.Cries.Latest != "" {
-			cryPath = downloadCryToStatic(targetID, p.Cries.Latest)
+			cryPath := downloadCryToStatic(targetID, p.Cries.Latest)
+			response["cry"] = cryPath
 		}
-	}
-	if tier >= 2 {
-		p, _ := fetchPokemonDetail(targetID)
-		for _, t := range p.Types {
-			types = append(types, strings.ToUpper(t.Type.Name))
-		}
-	}
-	if tier >= 3 {
-		desc = fetchDescriptions(targetID)
 	}
 
-	writeJSON(w, map[string]any{
-		"description": desc,
-		"types":       types,
-		"cry":         cryPath,
-		"tier":        tier,
-	})
+	if tier >= 2 {
+		p, _ := fetchPokemonDetail(targetID)
+		if p != nil && len(p.Types) > 0 {
+			var types []string
+			for _, t := range p.Types {
+				types = append(types, strings.ToUpper(t.Type.Name))
+			}
+			response["types"] = types
+		}
+	}
+
+	if tier >= 3 {
+		descMap := fetchDescriptionsAllLanguages(targetID)
+		if len(descMap) > 0 {
+			response["description"] = descMap
+		}
+	}
+
+	writeJSON(w, response)
 }
+
 
 func fetchPokemon(id int) (*Pokemon, error) {
 	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%d", id)
@@ -594,24 +589,40 @@ func cleanFlavorText(text string) string {
 	return strings.TrimSpace(text)
 }
 
-func fetchDescriptions(id int) string {
+func fetchDescriptionsAllLanguages(id int) map[string]string {
 	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon-species/%d/", id)
 	resp, err := http.Get(url)
 	if err != nil {
-		return ""
+		return nil
 	}
 	defer resp.Body.Close()
+
 	var data SpeciesResponse
 	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
-		return ""
+		return nil
 	}
+
+	allowedLangs := map[string]bool{
+		"en": true,
+		"fr": true,
+		"de": true,
+		"es": true,
+		"it": true,
+	}
+
+	descriptions := make(map[string]string)
 	for _, entry := range data.FlavorTextEntries {
-		if entry.Language.Name == "fr" {
-			return cleanFlavorText(entry.FlavorText)
+		lang := entry.Language.Name
+		if allowedLangs[lang] {
+			if _, ok := descriptions[lang]; !ok {
+				descriptions[lang] = cleanFlavorText(entry.FlavorText)
+			}
 		}
 	}
-	return ""
+	return descriptions
 }
+
+
 
 func downloadCryToStatic(id int, url string) string {
 	resp, err := http.Get(url)
