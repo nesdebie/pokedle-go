@@ -113,13 +113,17 @@ async function updateHints() {
   if (data.types && data.types.length > 0) {
     const container = document.createElement("div");
     container.id = "single-hint-container";
-
-    const content = document.createElement("span");
-    content.textContent = data.types.join(" - ");
-    container.appendChild(content);
-
+  
+    data.types.forEach(type => {
+      const span = document.createElement("span");
+      span.className = `badge ${type.toLowerCase()}`;
+      span.textContent = type;
+      container.appendChild(span);
+    });
+  
     hintsDynamic.appendChild(container);
   }
+  
 
   if (data.cry) {
     const container = document.createElement("div");

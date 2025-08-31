@@ -123,6 +123,114 @@ button:hover {
     border-color: #a72e2e;
 }
 
+.ghost {
+    background: rgb(94, 7, 244);
+    color: white;
+    border-color: white;
+}
+
+.normal {
+    background: rgb(230, 242, 242);
+    color: black;
+    border-color: white;
+}
+
+.poison {
+    background: rgb(157, 0, 255);
+    color: white;
+    border-color: white;
+}
+
+.rock {
+    background: rgb(126, 80, 2);
+    color: white;
+    border-color: white;
+}
+
+.ground {
+    background: rgb(246, 173, 101);
+    color: black;
+    border-color: white;
+}
+
+.steel {
+    background: rgb(197, 197, 197);
+    color: black;
+    border-color: white;
+}
+
+.bug {
+    background: rgb(119, 198, 65);
+    color: black;
+    border-color: white;
+}
+
+.fighting {
+    background: rgb(155, 73, 10);
+    color: white;
+    border-color: white;
+}
+
+.psychic {
+    background: rgb(148, 0, 217);
+    color: white;
+    border-color: white;
+}
+
+.dark {
+    background: rgb(61, 60, 60);
+    color: white;
+    border-color: white;
+}
+
+.fairy {
+    background: rgb(230, 107, 255);
+    color: black;
+    border-color: white;
+}
+
+.dragon {
+    background: rgb(72, 0, 255);
+    color: white;
+    border-color: white;
+}
+
+.ice {
+    background: cyan;
+    color: black;
+    border-color: white;
+}
+
+.fire {
+    background: rgb(255, 68, 0);
+    color: black;
+    border-color: white;
+}
+
+.grass {
+    background: rgb(0, 131, 15);
+    color: white;
+    border-color: white;
+}
+
+.water {
+    background: rgb(17, 81, 245);
+    color: white;
+    border-color: white;
+}
+
+.ice {
+    background: cyan;
+    color: black;
+    border-color: white;
+}
+
+.electrik {
+    background: rgb(255, 230, 0);
+    color: black;
+    border-color: white;
+}
+
 .hints {
     color: #b9c3ea;
     font-size: 14px;
