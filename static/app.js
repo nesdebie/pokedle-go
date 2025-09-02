@@ -102,31 +102,33 @@ async function updateHints() {
   if (data.description) {
     const container = document.createElement("div");
     container.id = "single-hint-container";
-  
-    const descKeys = Object.keys(data.description);
-    let currentLang = "en";
-    const content = document.createElement("span");
-    content.textContent = `"${data.description[currentLang]}"`;
-    container.appendChild(content);
-  
-    const langButtons = document.createElement("div");
-    langButtons.className = "lang-buttons";
-  
-    descKeys.forEach(lang => {
-      const btn = document.createElement("button");
-      btn.textContent = lang.toUpperCase();
-      btn.addEventListener("click", () => {
-        currentLang = lang;
 
-        content.textContent = `"${data.description[currentLang]}"`;
-      });
-      langButtons.appendChild(btn);
+    const descKeys = Object.keys(data.description);
+    let currentIndex = descKeys.indexOf("en");
+    if (currentIndex === -1) currentIndex = 0;
+
+    let currentLang = descKeys[currentIndex];
+
+    const content = document.createElement("span");
+    content.textContent = `Pokedex (${currentLang}): "${data.description[currentLang]}"`;
+    container.appendChild(content);
+
+    const langButton = document.createElement("button");
+    langButton.className = "lang-toggle";
+    const img = document.createElement("img");
+    img.src = "./img/language.svg";
+    img.alt = "Change language";
+    langButton.appendChild(img);
+
+    langButton.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % descKeys.length;
+      currentLang = descKeys[currentIndex];
+      content.textContent = `Pokedex (${currentLang}): "${data.description[currentLang]}"`;
     });
-  
-    container.appendChild(langButtons);
+
+    container.appendChild(langButton);
     hintsDynamic.appendChild(container);
   }
-  
 
   if (data.types && data.types.length > 0) {
     const container = document.createElement("div");

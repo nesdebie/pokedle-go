@@ -225,7 +225,7 @@ button:hover {
     border-color: white;
 }
 
-.electrik {
+.electric {
     background: rgb(255, 230, 0);
     color: black;
     border-color: white;
@@ -354,4 +354,33 @@ button:hover {
 #single-hint-container input[type="range"]:active::-webkit-slider-thumb {
     transform: scale(1.2);
     background: #007db5;
+}
+
+
+.lang-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-toggle img {
+  width: 24px;   /* fixe la largeur */
+  height: 24px;  /* fixe la hauteur */
+  object-fit: contain; /* évite toute déformation */
+  display: block;
+}
+
+.lang-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  transform: scale(1.1);
+}
+
+.lang-toggle:active {
+  transform: scale(0.95);
 }
