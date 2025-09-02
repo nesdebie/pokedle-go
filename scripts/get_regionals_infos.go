@@ -252,7 +252,7 @@ func main() {
 		if strings.Contains(strings.ToLower(nameEn), "linoone") && strings.Contains(pf.Name, "galar") {
 			position = "1"
 			isFullyEvolved = "0"
-		} else if strings.Contains(strings.ToLower(nameEn), "farfetch’d") && strings.Contains(pf.Name, "galar") {
+		} else if strings.Contains(strings.ToLower(nameFr), "canarticho") && strings.Contains(pf.Name, "galar") {
 			position = "0"
 			isFullyEvolved = "0"
 		} else if evo, ok := evoData[speciesID]; ok {
