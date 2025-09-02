@@ -458,7 +458,7 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		now.Location(),
 	)
 	if isDevMode {
-		midnight = time.Now().Add(1 * time.Minute)
+		midnight = time.Now().Add(5 * time.Minute)
 	}
 
 	if resp.Correct {
