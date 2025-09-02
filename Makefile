@@ -21,25 +21,25 @@ names:
 	@if [ -f data/pokemon_names_multilang.csv ]; then \
 		rm data/pokemon_names_multilang.csv; \
 	fi
-	go run scripts/update_names_csv.go
+	go run scripts/get_sts_names_multilang.go
 
 gen:
 	@if [ -f data/pokemon_id_gen.csv ]; then \
 		rm data/pokemon_id_gen.csv; \
 	fi
-	go run scripts/update_gen_csv.go
+	go run scripts/get_std_generations_infos.go
 
 evolutions:
 	@if [ -f data/pokemon_evolution_data.csv ]; then \
 		rm data/pokemon_evolution_data.csv; \
 	fi
-	go run scripts/update_evolutions_lines_csv.go
+	go run scripts/get_std_evolution_lines_infos.go
 
 regionals:
 	@if [ -f data/pokemon_forms.csv ]; then \
 		rm data/pokemon_forms.csv; \
 	fi
-	go run scripts/update_regional_names_csv.go
+	go run scripts/get_regionals_infos.go
 
 clean:
 	@rm -f $(NAME) go.mod go.sum static/hint*.ogg .env

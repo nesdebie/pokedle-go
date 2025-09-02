@@ -84,8 +84,8 @@ func extractIDFromURL(url string) int {
 func traverseEvolutionChain(node EvolutionNode, evoChainID int, position int, output *[][]string) {
 	pokemonID := extractIDFromURL(node.Species.URL)
 	fullyEvolved := 0
-	// 122 is hardcoded fix for mr mime error in PokeApi
-	if len(node.EvolvesTo) == 0 || pokemonID == 122 {
+	// 122 is hardcoded fix for mr mime and farfetchd error in PokeApi
+	if len(node.EvolvesTo) == 0 || pokemonID == 122 || pokemonID == 83 {
 		fullyEvolved = 1
 	}
 
