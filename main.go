@@ -261,6 +261,7 @@ func pickDailyIndex(names *NameIndex, t time.Time) int {
 	if names.maxIndex() == 0 {
 		return 0
 	}
+
 	secret := loadEnvKey(".env", "POKEDLE_SECRET")
 	msg := []byte(dayKey(t))
 	var sum []byte
@@ -422,7 +423,6 @@ func (s *Server) handleGuess(w http.ResponseWriter, r *http.Request) {
 		OK:      true,
 		Correct: guessP.ID == targetP.ID,
 		Guess: map[string]any{
-//			"id":     guessP.ID,
 			"name":   pokeName,
 			"types":  []string{guessType1, guessType2},
 			"height": guessP.Height,

@@ -113,20 +113,23 @@ async function updateHints() {
     content.textContent = `Pokedex (${currentLang}): "${data.description[currentLang]}"`;
     container.appendChild(content);
 
-    const langButton = document.createElement("button");
-    langButton.className = "lang-toggle";
-    const img = document.createElement("img");
-    img.src = "./img/language.svg";
-    img.alt = "Change language";
-    langButton.appendChild(img);
+    const descSize = Object.keys(data.description).length;
+    if (descSize > 1) {
+      const langButton = document.createElement("button");
+      langButton.className = "lang-toggle";
+      const img = document.createElement("img");
+      img.src = "./img/language.svg";
+      img.alt = "Change language";
+      langButton.appendChild(img);
 
-    langButton.addEventListener("click", () => {
-      currentIndex = (currentIndex + 1) % descKeys.length;
-      currentLang = descKeys[currentIndex];
-      content.textContent = `Pokedex (${currentLang}): "${data.description[currentLang]}"`;
-    });
+      langButton.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % descKeys.length;
+        currentLang = descKeys[currentIndex];
+        content.textContent = `Pokedex (${currentLang}): "${data.description[currentLang]}"`;
+      });
+      container.appendChild(langButton);
+  }
 
-    container.appendChild(langButton);
     hintsDynamic.appendChild(container);
   }
 
