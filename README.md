@@ -12,23 +12,25 @@ This project’s **source code** is licensed under the [MIT License](LICENSE).
 
 ## FileTree
 ```
-pokedle
 ├── data/
+│   ├── pokemon_evolution_data.csv
+│   ├── pokemon_forms.csv
 │   ├── pokemon_id_gen.csv
 │   └── pokemon_names_multilang.csv
+├── scripts/
+│   ├── genkey.go
+│   ├── get_regionals_infos.go
+│   ├── get_std_evolution_lines_infos.go
+│   ├── get_std_generations_infos.go
+│   └── get_std_names_multilang.go
 ├── static/
+│   ├── img/
+│   │   └── language.svg
 │   ├── app.js
 │   ├── index.html
 │   └── styles.css
-├── .git 🚫 (auto-hidden)
-├── LICENSE
 ├── Makefile
-├── README.md
-├── genkey.go
-├── main.go
-├── update_gen_csv.go
-└── update_names_csv.go
-
+└── main.go
 ```
 
 ## ❗ Disclaimer
