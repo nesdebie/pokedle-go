@@ -98,6 +98,40 @@ type NameIndex struct {
 	rows    []NamesRow
 }
 
+type SuggestReq struct {
+	Query string `json:"query"`
+}
+
+func (s *Server) handleSuggest(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	var req SuggestReq
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "bad json", http.StatusBadRequest)
+		return
+	}
+	q := normalizeKey(req.Query)
+	if q == "" {
+		writeJSON(w, []string{})
+		return
+	}
+
+	var suggestions []string
+	for _, row := range s.names.rows {
+		if strings.HasPrefix(normalizeKey(row.EN), q) {
+			suggestions = append(suggestions, row.EN)
+			if len(suggestions) >= 10 {
+				break
+			}
+		}
+	}
+
+	writeJSON(w, suggestions)
+}
+
+
 func removeAccents(s string) string {
 	decomposed := norm.NFD.String(s)
 	var result []rune
@@ -683,6 +717,8 @@ func main() {
 	http.HandleFunc("/api/guess", srv.handleGuess)
 	http.HandleFunc("/api/today", srv.handleToday)
 	http.HandleFunc("/api/hints", srv.handleHints)
+	http.HandleFunc("/api/suggest", srv.handleSuggest)
+
 
 	port := os.Getenv("PORT")
 	if port == "" {
