@@ -5,7 +5,7 @@ Pokédle is a Wordle-like game built in Go where players guess Pokémon.
 ## 🚀 Features
 - Guess Pokémon names in a Wordle-style game
 - Multilingual support (planned)
-- Fetches Pokémon data and images from [PokéAPI](https://pokeapi.co/)
+- Fetches Pokémon data and images from [PokéAPI](https://pokeapi.co/) v2.
 
 ## ⚖️ License
 This project’s **source code** is licensed under the [MIT License](LICENSE).

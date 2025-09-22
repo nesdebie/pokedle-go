@@ -102,35 +102,67 @@ type SuggestReq struct {
 	Query string `json:"query"`
 }
 
-func (s *Server) handleSuggest(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	var req SuggestReq
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "bad json", http.StatusBadRequest)
-		return
-	}
-	q := normalizeKey(req.Query)
-	if q == "" {
-		writeJSON(w, []string{})
-		return
-	}
-
-	var suggestions []string
-	for _, row := range s.names.rows {
-		if strings.HasPrefix(normalizeKey(row.EN), q) {
-			suggestions = append(suggestions, row.EN)
-			// if len(suggestions) >= 30 {
-			// 	break
-			// }
-		}
-	}
-
-	writeJSON(w, suggestions)
+type SuggestionGroup struct {
+  Lang  string   `json:"lang"`
+  Names []string `json:"names"`
 }
 
+
+func (s *Server) handleSuggest(w http.ResponseWriter, r *http.Request) {
+    if r.Method != http.MethodPost {
+        http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+        return
+    }
+
+    var req SuggestReq
+    if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+        http.Error(w, "bad json", http.StatusBadRequest)
+        return
+    }
+
+  q := normalizeKey(req.Query)
+  if q == "" {
+    writeJSON(w, []SuggestionGroup{})
+    return
+  }
+
+  groupsMap := map[string][]string{
+    "en": {},
+    "fr": {},
+    "de": {},
+    "es": {},
+    "it": {},
+  }
+
+  for _, row := range s.names.rows {
+    if strings.HasPrefix(normalizeKey(row.EN), q) {
+      groupsMap["en"] = append(groupsMap["en"], row.EN)
+    }
+    if strings.HasPrefix(normalizeKey(row.FR), q) {
+      groupsMap["fr"] = append(groupsMap["fr"], row.FR)
+    }
+    if strings.HasPrefix(normalizeKey(row.DE), q) {
+      groupsMap["de"] = append(groupsMap["de"], row.DE)
+    }
+    if strings.HasPrefix(normalizeKey(row.ES), q) {
+      groupsMap["es"] = append(groupsMap["es"], row.ES)
+    }
+    if strings.HasPrefix(normalizeKey(row.IT), q) {
+      groupsMap["it"] = append(groupsMap["it"], row.IT)
+    }
+  }
+
+  langOrder := []string{"en", "fr", "de", "es", "it"}
+  groups := []SuggestionGroup{}
+
+  for _, lang := range langOrder {
+    if names, ok := groupsMap[lang]; ok && len(names) > 0 {
+      groups = append(groups, SuggestionGroup{Lang: lang, Names: names})
+    }
+  }
+
+  writeJSON(w, groups)
+}
 
 func removeAccents(s string) string {
 	decomposed := norm.NFD.String(s)

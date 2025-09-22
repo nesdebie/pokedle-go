@@ -44,27 +44,49 @@ document.addEventListener("DOMContentLoaded", function() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: q }),
       });
-      const names = await res.json();
+
+      const suggestionsGroups = await res.json();
 
       suggestBox.innerHTML = "";
-      if (names.length === 0) {
+
+      if (!Array.isArray(suggestionsGroups) || suggestionsGroups.length === 0) {
         suggestBox.style.display = "none";
         return;
       }
-      names.forEach(name => {
-        const li = document.createElement("li");
-        li.textContent = name;
-        li.style.cursor = "pointer";
-        li.style.padding = "2px 4px";
-        li.addEventListener("click", () => {
-          input.value = name;
-          suggestBox.style.display = "none";
-          input.focus();
-        });
-        suggestBox.appendChild(li);
-      });
+
+      for (const group of suggestionsGroups) {
+        const lang = group.lang;
+        const names = group.names;
+
+        const langLi = document.createElement("li");
+        langLi.textContent = lang.toUpperCase();
+        langLi.style.backgroundColor = "#222";  
+        langLi.style.color = "#ddd";
+        langLi.style.fontWeight = "bold";
+        langLi.style.padding = "4px 8px";
+        langLi.style.cursor = "default";
+        langLi.style.userSelect = "none";
+        suggestBox.appendChild(langLi);
+
+        if (Array.isArray(names)) {
+          names.forEach(name => {
+            const li = document.createElement("li");
+            li.textContent = name;
+            li.style.cursor = "pointer";
+            li.style.padding = "2px 8px";
+            li.addEventListener("click", () => {
+              input.value = name;
+              suggestBox.style.display = "none";
+              input.focus();
+            });
+            suggestBox.appendChild(li);
+          });
+        }
+      }
+
       suggestBox.style.display = "block";
     } catch (err) {
+      console.error("suggest error", err);
       suggestBox.style.display = "none";
     }
   });
