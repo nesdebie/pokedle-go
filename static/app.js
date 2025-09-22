@@ -198,6 +198,7 @@ document.addEventListener("DOMContentLoaded", function() {
       let currentLang = descKeys[currentIndex];
 
       const content = document.createElement("span");
+      content.id = "pokedex-description";
       content.textContent = `Pokedex (${currentLang}): "${data.description[currentLang]}"`;
       container.appendChild(content);
 

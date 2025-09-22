@@ -2,6 +2,16 @@
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
 }
 
+@font-face {
+  font-family: 'PkmnGB';
+  src: url('PokemonGb-RAeo.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'MoltorsItalic';
+  src: url('MoltorsItalic-x3zdm.ttf') format('truetype');
+}
+
 body {
     margin: 0;
     background: #0b1020;
@@ -16,7 +26,14 @@ body {
 
 h1 {
     margin: 0 0 8px;
-    font-size: 28px;
+    font-family: 'MoltorsItalic', sans-serif;
+    color: white;
+    font-size: 48px;
+}
+
+p, ul {
+    font-family: 'PkmnGB', sans-serif;
+    font-size: 12px;
 }
 
 .sub {
@@ -30,6 +47,22 @@ form {
     margin-bottom: 16px;
 }
 
+#guessInput::placeholder {
+  font-family: 'PkmnGB';
+}
+
+#guessInput::-moz-placeholder {
+  font-family: 'PkmnGB';
+}
+
+#guessInput:-ms-input-placeholder {
+  font-family: 'PkmnGB';
+}
+
+#guessInput::-ms-input-placeholder {
+  font-family: 'PkmnGB';
+}
+
 input { 
     flex: 1;
     padding: 10px 12px;
@@ -40,17 +73,18 @@ input {
 }
 
 button { 
+    font-family: 'PkmnGB', sans-serif;
     padding: 10px 14px;
     border-radius: 10px;
-    border: 0;
-    background: #2992e9;
-    color: white;
+    border: 1px solid #e7ecff;
+    background: #a72e2e;
+    color: #e7ecff;
     font-weight: 600;
     cursor: pointer;
 }
 
 button:hover { 
-    filter: brightness(1.05);
+    background: #2ea75a;
 }
 
 #status {
@@ -67,8 +101,16 @@ button:hover {
 
 #hints-status {
     color: #c9d3ff;
-    font-size: 14px;
+    font-family: 'PkmnGB', sans-serif;
+    font-size: 12px;
     margin-bottom: 6px;
+}
+
+
+#pokedex-description {
+    color: #c9d3ff;
+    font-family: 'PkmnGB', sans-serif;
+    font-size: 12px;
 }
 
 .hints-box {
@@ -124,108 +166,126 @@ button:hover {
 }
 
 .ghost {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(94, 7, 244);
     color: white;
     border-color: white;
 }
 
 .normal {
-    background: rgb(230, 242, 242);
-    color: black;
+    font-family: 'PkmnGB', sans-serif;
+    background: rgb(160, 157, 157);
+    color: white;
     border-color: white;
 }
 
 .poison {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(157, 0, 255);
     color: white;
     border-color: white;
 }
 
 .rock {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(126, 80, 2);
     color: white;
     border-color: white;
 }
 
 .ground {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(246, 173, 101);
     color: black;
     border-color: white;
 }
 
 .steel {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(197, 197, 197);
     color: black;
     border-color: white;
 }
 
 .bug {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(119, 198, 65);
-    color: black;
+    color: white;
     border-color: white;
 }
 
 .fighting {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(155, 73, 10);
     color: white;
     border-color: white;
 }
 
 .psychic {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(148, 0, 217);
     color: white;
     border-color: white;
 }
 
 .dark {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(61, 60, 60);
     color: white;
     border-color: white;
 }
 
 .fairy {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(230, 107, 255);
-    color: black;
+    color: white;
     border-color: white;
 }
 
 .dragon {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(72, 0, 255);
     color: white;
     border-color: white;
 }
 
 .flying {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(137, 237, 237);
     color: black;
     border-color: white;
 }
 
 .fire {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(255, 68, 0);
     color: white;
     border-color: white;
 }
 
 .grass {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(0, 131, 15);
     color: white;
     border-color: white;
 }
 
 .water {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(17, 81, 245);
     color: white;
     border-color: white;
 }
 
 .ice {
+    font-family: 'PkmnGB', sans-serif;
     background: cyan;
     color: black;
     border-color: white;
 }
 
 .electric {
+    font-family: 'PkmnGB', sans-serif;
     background: rgb(255, 230, 0);
     color: black;
     border-color: white;
@@ -233,7 +293,7 @@ button:hover {
 
 .hints {
     color: #b9c3ea;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .name {
@@ -300,6 +360,7 @@ button:hover {
     display: inline-block;
     width: 37px;
     text-align: center;
+    font-family: 'PkmnGB', sans-serif;
     font-size: 14px;
     margin: 28.5px 0 18.5px 0;
     float: left;
