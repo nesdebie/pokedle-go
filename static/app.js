@@ -12,9 +12,12 @@ document.addEventListener("DOMContentLoaded", function() {
   const suggestBox = document.createElement("ul");
   suggestBox.id = "suggestions";
   suggestBox.style.position = "absolute";
-  suggestBox.style.background = "white";
-  suggestBox.style.border = "1px solid #ccc";
-  suggestBox.style.listStyle = "none";
+  suggestBox.style.top = (form.offsetHeight + 5) + "px";
+  suggestBox.style.left = "0";
+  suggestBox.style.width = "100%";
+  suggestBox.style.background = "#0d1b2e";
+  suggestBox.style.border = "1px solid #26305a";
+  suggestBox.style.borderRadius = "12px";
   suggestBox.style.margin = 0;
   suggestBox.style.padding = "4px";
   suggestBox.style.maxHeight = "200px";
@@ -22,16 +25,13 @@ document.addEventListener("DOMContentLoaded", function() {
   suggestBox.style.display = "none";
   suggestBox.style.zIndex = "1000";
 
-  console.log("input element:", input);
   if (!input) {
-    console.error("L'élément #guessInput est introuvable dans le DOM.");
     return;
   }
   input.parentNode.style.position = "relative";
   input.parentNode.appendChild(suggestBox);
 
   input.addEventListener("input", async () => {
-    console.log("input event triggered:", input.value);
     const q = input.value.trim();
     if (!q) {
       suggestBox.style.display = "none";
@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
         body: JSON.stringify({ query: q }),
       });
       const names = await res.json();
-      console.log("suggestions API result:", names);
 
       suggestBox.innerHTML = "";
       if (names.length === 0) {
@@ -64,10 +63,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         suggestBox.appendChild(li);
       });
-      console.log("ul should be displayed now");
       suggestBox.style.display = "block";
     } catch (err) {
-      console.error("suggest error", err);
       suggestBox.style.display = "none";
     }
   });

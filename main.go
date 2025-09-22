@@ -122,9 +122,9 @@ func (s *Server) handleSuggest(w http.ResponseWriter, r *http.Request) {
 	for _, row := range s.names.rows {
 		if strings.HasPrefix(normalizeKey(row.EN), q) {
 			suggestions = append(suggestions, row.EN)
-			if len(suggestions) >= 10 {
-				break
-			}
+			// if len(suggestions) >= 30 {
+			// 	break
+			// }
 		}
 	}
 
