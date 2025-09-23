@@ -275,6 +275,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
       playIconContainer.addEventListener('click', () => {
         if (playState === 'play') {
+          // Si audio est à la fin, on reset currentTime à 0 pour relancer
+          if (audio.currentTime === audio.duration) {
+            audio.currentTime = 0;
+          }
           audio.play();
           playAnimation.playSegments([14, 27], true);
           playState = 'pause';
@@ -284,6 +288,9 @@ document.addEventListener("DOMContentLoaded", function() {
           playState = 'play';
         }
       });
+
+      // Initialisation du style du slider
+      container.style.setProperty('--seek-before-width', '0%');
 
       const showRangeProgress = (rangeInput) => {
         container.style.setProperty('--seek-before-width', rangeInput.value / rangeInput.max * 100 + '%');
@@ -298,6 +305,25 @@ document.addEventListener("DOMContentLoaded", function() {
         seekSlider.value = (audio.currentTime / audio.duration) * 100;
         currentTime.textContent = formatTime(audio.currentTime);
         showRangeProgress(seekSlider);
+      });
+
+      audio.addEventListener('ended', () => {
+        setTimeout(() => {
+          seekSlider.value = 0;
+          showRangeProgress(seekSlider);
+          currentTime.textContent = "0:00";
+          playAnimation.playSegments([0, 14], true);
+          playState = 'play';
+          audio.currentTime = 0; // remise à zéro pour relancer au clic 
+        }, 500); // délai 1000 ms = 1 seconde
+      });
+
+
+      audio.addEventListener('play', () => {
+        if (audio.currentTime === 0) {
+          seekSlider.value = 0;
+          showRangeProgress(seekSlider);
+        }
       });
 
       function formatTime(time) {

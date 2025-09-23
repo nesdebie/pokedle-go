@@ -68,8 +68,8 @@ input {
     padding: 10px 12px;
     border-radius: 10px;
     border: 1px solid #2b3557;
-    background: #0f1630;
-    color: #fff;
+    color: black;
+    font-family: 'PkmnGB', sans-serif;
 }
 
 button { 
@@ -106,7 +106,6 @@ button:hover {
     font-size: 12px;
     margin-bottom: 6px;
 }
-
 
 #pokedex-description {
     color: #c9d3ff;
@@ -311,11 +310,9 @@ button:hover {
     padding: 8px;
 }
 
-
 #single-hint-container::before {
     display: none;
 }
-
 
 #single-hint-container button {
     padding: 0;
@@ -335,8 +332,7 @@ button:hover {
 #play-icon svg path {
     stroke: #c9d3ff !important;
     fill: #c9d3ff !important;
-  }
-  
+}
 
 #single-hint-container .time {
     display: inline-block;
@@ -348,6 +344,7 @@ button:hover {
     color: #c9d3ff;
 }
 
+/* MODIFICATION POUR LE SLIDER - barre de progression avec linear-gradient sur le track */
 #single-hint-container input[type="range"] {
     position: relative;
     -webkit-appearance: none;
@@ -355,49 +352,58 @@ button:hover {
     margin: 30px 2.5% 20px 2.5%;
     float: left;
     outline: none;
-    background: transparent;
-}
-
-#single-hint-container input[type="range"]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 3px;
-    cursor: pointer;
     background: linear-gradient(
-        to right,
-        rgba(0, 125, 181, 0.6) var(--buffered-width),
-        rgba(0, 125, 181, 0.2) var(--buffered-width)
+      to right,
+      #d6dee1 0%,
+      #d6dee1 var(--seek-before-width, 0%),
+      rgba(0, 125, 181, 0.2) var(--seek-before-width, 0%),
+      rgba(0, 125, 181, 0.2) 100%
     );
+    border-radius: 3px;
+    height: 3px;
+    box-sizing: border-box;
 }
 
-#single-hint-container input[type="range"]::before {
-    position: absolute;
-    content: "";
-    top: 8px;
-    left: 0;
-    width: var(--seek-before-width);
-    height: 3px;
-    background-color: #007db5;
-    cursor: pointer;
-}
+/* Supprime le pseudo-élément ::before qui causait le décalage */
+/* #single-hint-container input[type="range"]::before { ... }  */ 
 
 #single-hint-container input[type="range"]::-webkit-slider-thumb {
-    position: relative;
     -webkit-appearance: none;
-    box-sizing: content-box;
-    border: 1px solid #007db5;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    background-color: #fff;
-    cursor: pointer;
-    margin: -7px 0 0 0;
+    appearance: none;
+    width: 0;
+    height: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer; /* conserve le curseur pointer si souhaité */
+    margin: 0;
+    box-shadow: none;
 }
 
 #single-hint-container input[type="range"]:active::-webkit-slider-thumb {
     transform: scale(1.2);
-    background: #007db5;
+    background: #d6dee1;
 }
 
+/* Pour Firefox */
+#single-hint-container input[type="range"]::-moz-range-thumb {
+    width: 0;
+    height: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+#single-hint-container input[type="range"]:active::-moz-range-thumb {
+    transform: scale(1.2);
+    background: #d6dee1;
+}
+
+/* Important : pour ne jamais déborder ! */
+#single-hint-container input[type="range"] {
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
+}
 
 .lang-toggle {
   background: none;
