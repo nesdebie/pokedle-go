@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const langButton = document.createElement("button");
         langButton.className = "lang-toggle";
         const img = document.createElement("img");
-        img.src = "./img/language.svg";
+        img.src = "./images/language.svg";
         img.alt = "Change language";
         langButton.appendChild(img);
 
@@ -338,6 +338,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const guess = input.value.trim();
     if (!guess) return;
     input.value = "";
+    statusEl.style.color = '#e7ecff';
     statusEl.textContent = "Checking...";
     suggestBox.style.display = "none";
 
@@ -350,6 +351,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const data = await res.json();
       if (!data.ok) {
         statusEl.textContent = data.error || "Erreur.";
+        statusEl.style.color = 'red';
         return;
       }
 
@@ -392,6 +394,7 @@ document.addEventListener("DOMContentLoaded", function() {
       await updateHints();
     } catch (err) {
       statusEl.textContent = "Network Error.";
+      statusEl.style.color = 'red';
       console.error(err);
     }
     statusEl.textContent = "";

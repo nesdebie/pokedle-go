@@ -24,7 +24,11 @@ This project’s **source code** is licensed under the [MIT License](LICENSE).
 │   ├── get_std_generations_infos.go
 │   └── get_std_names_multilang.go
 ├── static/
-│   ├── img/
+│   ├── fonts/
+│   │   ├── MoltorsItalic-x3zdm.ttf
+│   │   └── PokemonGb-RAeo.ttf
+│   ├── images/
+│   │   ├── favicon.ico
 │   │   └── language.svg
 │   ├── app.js
 │   ├── index.html

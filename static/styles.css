@@ -4,12 +4,12 @@
 
 @font-face {
   font-family: 'PkmnGB';
-  src: url('PokemonGb-RAeo.ttf') format('truetype');
+  src: url('fonts/PokemonGb-RAeo.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'MoltorsItalic';
-  src: url('MoltorsItalic-x3zdm.ttf') format('truetype');
+  src: url('fonts/MoltorsItalic-x3zdm.ttf') format('truetype');
 }
 
 body {
@@ -65,7 +65,7 @@ form {
 
 input { 
     flex: 1;
-    padding: 10px 12px;
+    padding: 5px 12px;
     border-radius: 10px;
     border: 1px solid #2b3557;
     color: black;
@@ -347,7 +347,6 @@ button:hover {
 #single-hint-container input[type="range"] {
     position: relative;
     -webkit-appearance: none;
-    width: 48%;
     margin: 30px 2.5% 20px 2.5%;
     float: left;
     outline: none;
@@ -358,9 +357,7 @@ button:hover {
       rgba(0, 125, 181, 0.2) var(--seek-before-width, 0%),
       rgba(0, 125, 181, 0.2) 100%
     );
-    border-radius: 3px;
     height: 3px;
-    box-sizing: border-box;
 }
 
 #single-hint-container input[type="range"]::-webkit-slider-thumb {
