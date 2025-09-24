@@ -344,7 +344,6 @@ button:hover {
     color: #c9d3ff;
 }
 
-/* MODIFICATION POUR LE SLIDER - barre de progression avec linear-gradient sur le track */
 #single-hint-container input[type="range"] {
     position: relative;
     -webkit-appearance: none;
@@ -364,9 +363,6 @@ button:hover {
     box-sizing: border-box;
 }
 
-/* Supprime le pseudo-élément ::before qui causait le décalage */
-/* #single-hint-container input[type="range"]::before { ... }  */ 
-
 #single-hint-container input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -374,7 +370,7 @@ button:hover {
     height: 0;
     border: none;
     background: transparent;
-    cursor: pointer; /* conserve le curseur pointer si souhaité */
+    cursor: pointer;
     margin: 0;
     box-shadow: none;
 }
@@ -384,7 +380,6 @@ button:hover {
     background: #d6dee1;
 }
 
-/* Pour Firefox */
 #single-hint-container input[type="range"]::-moz-range-thumb {
     width: 0;
     height: 0;
@@ -398,7 +393,6 @@ button:hover {
     background: #d6dee1;
 }
 
-/* Important : pour ne jamais déborder ! */
 #single-hint-container input[type="range"] {
     box-sizing: border-box;
     width: 100%;

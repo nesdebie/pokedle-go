@@ -275,7 +275,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
       playIconContainer.addEventListener('click', () => {
         if (playState === 'play') {
-          // Si audio est à la fin, on reset currentTime à 0 pour relancer
           if (audio.currentTime === audio.duration) {
             audio.currentTime = 0;
           }
@@ -289,7 +288,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
 
-      // Initialisation du style du slider
       container.style.setProperty('--seek-before-width', '0%');
 
       const showRangeProgress = (rangeInput) => {
@@ -314,8 +312,8 @@ document.addEventListener("DOMContentLoaded", function() {
           currentTime.textContent = "0:00";
           playAnimation.playSegments([0, 14], true);
           playState = 'play';
-          audio.currentTime = 0; // remise à zéro pour relancer au clic 
-        }, 500); // délai 1000 ms = 1 seconde
+          audio.currentTime = 0;
+        }, 250);
       });
 
 
