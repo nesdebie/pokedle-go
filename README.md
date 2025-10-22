@@ -39,5 +39,4 @@ This project’s **source code** is licensed under the [MIT License](LICENSE).
 
 ## ❗ Disclaimer
 Pokédle uses Pokémon names and images, which are trademarks and copyrighted material owned by **The Pokémon Company** and **Nintendo**.  
-This project is an **unofficial fan work** and is provided for **educational and fan purposes only**.  
-The **source code** is under MIT License, but this does **not** apply to Pokémon assets.
+This project is an **unofficial fan work** and is provided for **educational and fan purposes only**.
