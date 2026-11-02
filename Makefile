@@ -6,17 +6,14 @@ NC    = \033[0m
 
 # ---------- Server ----------
 
-all: $(NAME) .env
+all: $(NAME) key
 
 $(NAME):
 	go build -o $(NAME) ./cmd/pokedle
 	@echo "$(RED)Usage: $(GREEN)./$(NAME)$(NC)"
 	@echo "$(RED)Dev mode: $(GREEN)./$(NAME) dev$(NC)"
 
-# Secret used to pick the Pokémon of the day (generated once).
-.env:
-	go run ./scripts/genkey
-
+# New random secret on every build -> changes the Pokémon of the day.
 key:
 	go run ./scripts/genkey
 
@@ -50,11 +47,8 @@ regionals:
 # ---------- Cleanup ----------
 
 clean:
-	@rm -f $(NAME) static/hint_*.ogg
+	@rm -f $(NAME) static/hint_*.ogg .env
 
-fclean: clean
-	@rm -f .env
+re: clean all
 
-re: fclean all
-
-.PHONY: all $(NAME) key run dev test csv names gen evolutions regionals clean fclean re
+.PHONY: all $(NAME) key run dev test csv names gen evolutions regionals clean re

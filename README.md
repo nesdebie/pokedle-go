@@ -14,7 +14,7 @@ This project’s **source code** is licensed under the [MIT License](LICENSE).
 Requires Go 1.24+.
 
 ```bash
-make          # build ./pokedle and generate .env (POKEDLE_SECRET) if missing
+make          # build ./pokedle and generate a new .env (POKEDLE_SECRET) -> new Pokémon of the day
 ./pokedle     # http://localhost:8080 (PORT env var to change it)
 ./pokedle dev # dev mode: cookies expire after 5 minutes
 make test     # go vet + unit tests
